@@ -28,8 +28,8 @@ namespace BazaarCasino
             if(!crabRace.CanBet)return "The race is underway. Betting opens after the result.";
             if(HasTableStake(request.masterId))return "Finish or cancel your table wager first.";
             int wager=request.wager;
-            if(request.choice<0||request.choice>=CrabRun.Count||wager<0||wager>MaximumBet||wager>0&&wager<RaceMinimum())return "Review the scaled minimum and maximum stake.";
             var previous=crabRace.Find(request.masterId);int old=previous?.wager??0;
+            if(request.choice<0||request.choice>=CrabRun.Count||!WagerRules.Valid(wager,RaceMinimum(),MaximumBet,(ulong)master.money+(uint)old,request.allIn,true))return "Review the scaled minimum and maximum stake. All In must use your entire available gold.";
             if((ulong)master.money+(uint)old<(uint)wager)return "Not enough gold.";
             if((ulong)master.money+(uint)old-(uint)wager>uint.MaxValue)return "Gold wallet is full; spend gold before refunding.";
             if(!crabRace.SetBet(request.masterId,PlayerName(master),request.choice,wager,Time.unscaledTime))return "Betting is closed.";

@@ -142,7 +142,7 @@ namespace BazaarCasino
         internal TextMeshPro Label(string text,Vector3 position,float size,Vector2 bounds,Quaternion rotation,Transform parent=null)
         {
             var obj=new GameObject("LoungeSign");obj.transform.SetParent(parent?parent:transform,false);obj.transform.localPosition=position;obj.transform.localRotation=rotation;
-            var label=obj.AddComponent<TextMeshPro>();if(font)label.font=font;label.text=text;label.color=new Color(.95f,.77f,.35f);label.fontSize=size;label.alignment=TextAlignmentOptions.Center;label.rectTransform.sizeDelta=bounds;
+            var label=obj.AddComponent<TextMeshPro>();if(font)label.font=font;CasinoText.Bind(label);label.text=text;label.color=new Color(.95f,.77f,.35f);label.fontSize=size;label.alignment=TextAlignmentOptions.Center;label.rectTransform.sizeDelta=bounds;
             return label;
         }
         private void OnDestroy(){foreach(var material in materials)if(material)Destroy(material);}
@@ -168,7 +168,7 @@ namespace BazaarCasino
             portalLabel.gameObject.AddComponent<CasinoBillboard>();
             return door;
         }
-        public string GetContextString(Interactor actor)=>IsExit?"Return to Bazaar":"Enter Casino Lounge";
+        public string GetContextString(Interactor actor)=>CasinoText.Get(IsExit?"Return to Bazaar":"Enter Casino Lounge");
         public Interactability GetInteractability(Interactor actor)=>CasinoPlugin.InBazaar&&Room?Interactability.Available:Interactability.Disabled;
         public void OnInteractionBegin(Interactor actor)=>CasinoPlugin.Instance?.UseLoungeDoor(actor,this);
         public bool ShouldIgnoreSpherecastForInteractibility(Interactor actor)=>false;

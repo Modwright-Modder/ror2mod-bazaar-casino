@@ -129,7 +129,7 @@ namespace BazaarCasino
             {winLight.intensity=net>0?1+3*Mathf.Abs(Mathf.Sin(t*12)):.8f;result.transform.localScale=Vector3.one*(net>0?1+.05f*Mathf.Sin(t*9):1);yield return null;}
             winLight.intensity=.8f;result.transform.localScale=Vector3.one;spinning=false;animation=null;
         }
-        public string GetContextString(Interactor actor)=>"Play Slots — Bazaar Jackpot";
+        public string GetContextString(Interactor actor)=>CasinoText.Get("Play Slots — Bazaar Jackpot");
         public Interactability GetInteractability(Interactor actor)=>CasinoPlugin.InBazaar&&!spinning?Interactability.Available:Interactability.Disabled;
         public void OnInteractionBegin(Interactor actor)=>CasinoPlugin.Instance?.OpenSlotMachine(actor,this);
         public bool ShouldIgnoreSpherecastForInteractibility(Interactor actor)=>false;

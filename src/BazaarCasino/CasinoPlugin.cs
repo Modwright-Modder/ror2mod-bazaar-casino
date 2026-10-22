@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 namespace BazaarCasino
 {
-    [BepInPlugin("local.gakon.bazaarcasino", "Bazaar Casino", "1.10.6")]
+    [BepInPlugin("local.gakon.bazaarcasino", "Bazaar Casino", "1.11.1")]
     public sealed partial class CasinoPlugin : BaseUnityPlugin
     {
         internal static CasinoPlugin Instance;
@@ -59,11 +59,16 @@ namespace BazaarCasino
             On.RoR2.Interactor.AttemptInteraction += InteractWithDealer;
             On.RoR2.PlayerCharacterMasterController.Update += SuppressSeatUpdate;
             On.RoR2.PlayerCharacterMasterController.FixedUpdate += SuppressSeatFixedUpdate;
+            On.RoR2.EntityStateMachine.ManagedUpdate += SuppressSeatStateUpdate;
+            On.RoR2.EntityStateMachine.ManagedFixedUpdate += SuppressSeatStateFixedUpdate;
+            On.RoR2.TeleportHelper.TeleportGameObject_GameObject_Vector3_Vector3_Quaternion_bool_bool += GuardSeatTeleport;
+            On.RoR2.MapZone.TeleportBody += GuardSeatMapZone;
             On.RoR2.UI.MPEventSystem.Update += CasinoEventUpdate;
-            On.RoR2.UI.ChatBox.SubmitChat += SubmitCasinoChat;
             minBet = Config.Bind("Economy", "MinimumBet", 10, new ConfigDescription("Floor for the live minimum wager. The minimum follows the current scaled Lunar Cache price, capped by MaximumBet.", new AcceptableValueRange<int>(1, 10000)));
             maxBet = Config.Bind("Economy", "MaximumBet", 100000, new ConfigDescription("Maximum initial wager. Shared blackjack can reserve up to four times this amount with split and doubles.", new AcceptableValueRange<int>(10, 1000000)));
             scaledPrices = Config.Bind("Selling", "ScaleWithDifficulty", true, "Scale sale prices with Run.GetDifficultyScaledCost, like gold shop costs.");
+            ConfigureBazaarWallet();
+            CasinoText.Initialize(Config,Info.Location,Logger);
             ConfigureGacha();
             ConfigureRace();
             ConfigureSoundtrack();
@@ -111,7 +116,7 @@ namespace BazaarCasino
             if (Waiting && Time.unscaledTime - requestStarted > 6f)
             {
                 Waiting = false;
-                if(loungeTravel.Pending){loungeTravel.Cancel();ShowLoungeTravelError("Host did not confirm lounge travel. Check that every player uses Bazaar Casino 1.10.6 and the same network MessageId.");}
+                if(loungeTravel.Pending){loungeTravel.Cancel();ShowLoungeTravelError("Host did not confirm lounge travel. Check that every player uses Bazaar Casino 1.11.0 and the same network MessageId.");}
                 ui.SharedRequestTimedOut();
                 ui.SlotTimedOut();
                 ui.CaseTimedOut();
@@ -119,13 +124,13 @@ namespace BazaarCasino
                 ui.Notify("Host did not respond. Install Bazaar Casino on the host and every player; check the network MessageId matches.");
             }
         }
-        internal void Send(ActionKind action, int bet = 0, int choice = 0, int number = 0, RouletteBet[] bets = null, TableKind table = 0)
+        internal void Send(ActionKind action, int bet = 0, int choice = 0, int number = 0, RouletteBet[] bets = null, TableKind table = 0, bool allIn = false)
         {
             var master = LocalMaster;
             if (!InBazaar || !master || Waiting) return;
             var identity = master.GetComponent<NetworkIdentity>();
             if (!identity) return;
-            var request = new CasinoRequest { requestId = ++requestCounter, masterId = identity.netId.Value, action = action, wager = bet, choice = choice, number = number, bets = bets, table=(byte)table };
+            var request = new CasinoRequest { requestId = ++requestCounter, masterId = identity.netId.Value, action = action, wager = bet, choice = choice, number = number, bets = bets, table=(byte)table, allIn=allIn };
             BeginLoungeTravel(request,master);
             Waiting = true; requestStarted = Time.unscaledTime;
             if (NetworkServer.active) Deliver(Process(master, request));
@@ -195,7 +200,7 @@ namespace BazaarCasino
             {serverMinimum=state.minBet;serverMaximum=state.maxBet;ui.SetWagerLimits(state.minBet,state.maxBet);}
             if(state.loungeReply){DeliverLoungeTravel(state);return;}
             if(loungeTravel.Matches(state.requestId))
-            {loungeTravel.Cancel();ShowLoungeTravelError("The host uses an older lounge travel protocol. Update Bazaar Casino to 1.10.6 on every player.");return;}
+            {loungeTravel.Cancel();ShowLoungeTravelError("The host uses an older lounge travel protocol. Update Bazaar Casino to 1.11.0 on every player.");return;}
             if(state.raceReply){if(state.raceState!=null&&lounge&&lounge.Race)lounge.Race.Receive(state.raceState);ui.RaceResponse(state.message);return;}
             if(state.tableReply){if(state.tableState!=null)ApplyTableSnapshot(state.tableState);ui.TableResponse(state.message);return;}
             State = state; ui.Receive(state);
@@ -288,7 +293,7 @@ namespace BazaarCasino
                     int bet = request.wager;
                     bool validTable = request.action != ActionKind.Roulette || RouletteBets.Validate(request.bets, state.minBet, state.maxBet, master.money, out bet);
                     if (session.hand != null && session.hand.active) error = "Finish your blackjack hand first.";
-                    else if (bet < state.minBet || bet > state.maxBet || (uint)bet > master.money) error = "Wager outside the allowed range or insufficient gold.";
+                    else if (!WagerRules.Valid(bet,state.minBet,state.maxBet,master.money,request.allIn)) error = "Wager outside the allowed range or insufficient gold.";
                     else if (!validTable) error = "Invalid roulette chips, total wager, or insufficient gold.";
                     else
                     {
@@ -337,12 +342,16 @@ namespace BazaarCasino
         {
             SceneDirector.onPrePopulateSceneServer -= PrepareSceneDirector;
             UnityEngine.SceneManagement.SceneManager.sceneLoaded -= PrepareLoadedScene;
+            StopBazaarWallet();
             StopScenePreparation();
             On.RoR2.Interactor.AttemptInteraction -= InteractWithDealer;
             On.RoR2.PlayerCharacterMasterController.Update -= SuppressSeatUpdate;
             On.RoR2.PlayerCharacterMasterController.FixedUpdate -= SuppressSeatFixedUpdate;
+            On.RoR2.EntityStateMachine.ManagedUpdate -= SuppressSeatStateUpdate;
+            On.RoR2.EntityStateMachine.ManagedFixedUpdate -= SuppressSeatStateFixedUpdate;
+            On.RoR2.TeleportHelper.TeleportGameObject_GameObject_Vector3_Vector3_Quaternion_bool_bool -= GuardSeatTeleport;
+            On.RoR2.MapZone.TeleportBody -= GuardSeatMapZone;
             On.RoR2.UI.MPEventSystem.Update -= CasinoEventUpdate;
-            On.RoR2.UI.ChatBox.SubmitChat -= SubmitCasinoChat;
             ClearTables(false);
             if (dealer) Destroy(dealer);
             if (NetworkServer.active && serverRegistered) NetworkServer.UnregisterHandler((short)requestMessageId.Value);

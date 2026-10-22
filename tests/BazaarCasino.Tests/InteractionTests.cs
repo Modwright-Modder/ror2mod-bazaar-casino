@@ -55,7 +55,7 @@ static class InteractionChecks
         {
             int next=WagerRules.Edit(wager,chip,false,10,100000,wallet);wallet-=(uint)(next-wager);wager=next;betting.Bet(1,wager,10);
             check(wager+wallet==1000&&betting.Find(1).wager==wager,"Adding another chip after betting debits only its gold delta");
-            check(betting.deadline==25,"Adding chips does not extend the shared betting countdown");
+            check(betting.deadline==15,"Adding chips does not extend the shared betting countdown");
             betting.Bet(1,wager,11);check(betting.Find(1).wager==wager,"Absolute host wager acknowledgments remain idempotent");
         }
         int reduced=WagerRules.Edit(wager,100,true,10,100000,wallet);wallet+=(uint)(wager-reduced);wager=reduced;

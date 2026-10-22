@@ -1,10 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net9.0</TargetFramework></PropertyGroup>
+  <ItemGroup><Compile Include="../../src/BazaarCasino/SeatPlacement.cs" Link="SeatPlacement.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../../src/BazaarCasino/SeatAnchor.cs" Link="SeatAnchor.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../../src/BazaarCasino/WagerRules.cs" Link="WagerRules.cs" /></ItemGroup>
-  <ItemGroup><Compile Include="../../src/BazaarCasino/ManualCommandText.cs" Link="ManualCommandText.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../../src/BazaarCasino/LoungeTravel.cs" Link="LoungeTravel.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../../src/BazaarCasino/CaseLayout.cs" Link="CaseLayout.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../../src/BazaarCasino/InteractionRules.cs" Link="InteractionRules.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../../src/BazaarCasino/HermitRace.cs" Link="HermitRace.cs" /><Compile Include="../../src/BazaarCasino/GachaRules.cs" Link="GachaRules.cs" /><Compile Include="../../src/BazaarCasino/SpinTiming.cs" Link="SpinTiming.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../../src/BazaarCasino/RouletteLayout.cs" Link="RouletteLayout.cs" /><Compile Include="../../src/BazaarCasino/LoungeLayout.cs" Link="LoungeLayout.cs" /><Compile Include="../../src/BazaarCasino/PlacementGeometry.cs" Link="PlacementGeometry.cs" /><Compile Include="../../src/BazaarCasino/SeatLayout.cs" Link="SeatLayout.cs" /><Compile Include="../../src/BazaarCasino/Games.cs" Link="Games.cs" /><Compile Include="../../src/BazaarCasino/RoulettePhysics.cs" Link="RoulettePhysics.cs" /><Compile Include="../../src/BazaarCasino/TableGames.cs" Link="TableGames.cs" /></ItemGroup>
-</Project>
+<ItemGroup><Compile Include="../../src/BazaarCasino/TranslationCatalog.cs" Link="TranslationCatalog.cs" /></ItemGroup></Project>

@@ -19,7 +19,6 @@ namespace BazaarCasino
         private static readonly Color Muted = new Color(0.65f, 0.69f, 0.76f);
         private RectTransform modalFrame,wagerBar;
         private TextMeshProUGUI modalTitle,modalRules;
-        private TextMeshProUGUI casinoHint;
         private GameObject canvasRoot, modal, buttonPrefab;
         private RectTransform content;
         private TextMeshProUGUI wallet, status, wagerText;
@@ -73,8 +72,6 @@ namespace BazaarCasino
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize; scaler.referenceResolution = new Vector2(1920, 1080); scaler.matchWidthOrHeight = 0.5f;
             canvasRoot.AddComponent<GraphicRaycaster>();
             DontDestroyOnLoad(canvasRoot);
-            var hint = casinoHint = Label(canvasRoot.transform, "CASINO  •  E to interact", 18, Gold);
-            Anchors(hint.rectTransform, 0.02f, 0.05f, 0.24f, 0.085f);
             modal = Rect(canvasRoot.transform, "CasinoModal").gameObject;
             Stretch((RectTransform)modal.transform);
             modal.SetActive(false);
@@ -124,6 +121,7 @@ namespace BazaarCasino
         internal void Close()
         {
             if(IsAnyCasinoOpen)interactionGate.Close(Time.unscaledTime);
+            CloseWagerDialog();
             CloseSharedTable();
             CloseSlotOverlay();
             CloseCaseOverlay();
@@ -144,7 +142,6 @@ namespace BazaarCasino
             UpdateSlotOverlay();
             UpdateCaseOverlay();
             UpdateRaceOverlay();
-            if(casinoHint)casinoHint.gameObject.SetActive(!IsAnyCasinoOpen);
             if (!IsOpen) return;
             if (Input.GetKeyDown(KeyCode.Escape)) CloseFromEscape();
             if (wallet && !animating && !Plugin.Waiting) wallet.text = "Gold: " + (CasinoPlugin.LocalMaster ? CasinoPlugin.LocalMaster.money.ToString("N0") : "—");
@@ -165,7 +162,7 @@ namespace BazaarCasino
         internal void SetWagerLimits(int minimum,int maximum)
         {
             if(minimum<=0||maximum<minimum)return;
-            bet=Mathf.Clamp(bet,minimum,maximum);
+            if(!slotAllIn)bet=Mathf.Clamp(bet,minimum,maximum);
             int oldChip=tableBet;tableBet=Mathf.Clamp(tableBet,minimum,maximum);
             if(oldChip!=tableBet&&tablePanel&&tablePanel.activeSelf)DrawTableControls();
         }
@@ -179,6 +176,7 @@ namespace BazaarCasino
         private void SetBet(long amount)
         {
             if (animating || Plugin.Waiting || State?.handActive == true) return;
+            slotAllIn=false;
             bet = (int)Math.Max(Plugin.MinimumBet, Math.Min(Plugin.MaximumBet, amount));
             if (wagerText) wagerText.text = "Wager: " + bet.ToString("N0");
             if(modal&&modal.activeSelf) DrawPage();
@@ -285,7 +283,7 @@ namespace BazaarCasino
         private TextMeshProUGUI Label(Transform parent, string text, float size, Color color, TextAlignmentOptions alignment = TextAlignmentOptions.Center)
         {
             var label = Rect(parent, "Label").gameObject.AddComponent<TextMeshProUGUI>();
-            label.font = font; label.text = text; label.fontSize = size; label.color = color; label.alignment = alignment;
+            CasinoText.Bind(label);label.font = font; label.text = text; label.fontSize = size; label.color = color; label.alignment = alignment;
             label.raycastTarget = false; label.enableWordWrapping = false; label.overflowMode = TextOverflowModes.Ellipsis; return label;
         }
         private static void Anchors(RectTransform rect, float x0, float y0, float x1, float y1)

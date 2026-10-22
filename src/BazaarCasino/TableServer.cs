@@ -118,13 +118,13 @@ namespace BazaarCasino
                 {nextPlacementWarning=Time.unscaledTime+20;Logger.LogWarning("Retrying missing lounge tables; found "+worldTables.Count+" of 2.");}
             }
             double now=Time.unscaledTime;
-            // Players walking away or disconnecting relinquish their seat. A
+            // Position drift never relinquishes an authorized seat. A
             // committed blackjack hand stands and still settles against the dealer.
             foreach(var pair in joinedTables.ToArray())
             {
                 var master=FindMaster(pair.Key); var body=master?master.GetBody():null;
                 if(!worldTables.TryGetValue(pair.Value,out var table))continue;
-                if(!body||!body.healthComponent.alive||Vector3.Distance(body.corePosition,table.transform.position)>18)
+                if(!body||!body.healthComponent||!seatAnchors.TryGetValue(pair.Key,out var anchor)||!anchor.Keeps(body.netId.Value,true,body.healthComponent.alive,SceneExitController.isRunning))
                     LeaveSharedTable(pair.Key,pair.Value,now);
             }
             uint previousTurn=blackjackTable.turn;int previousHand=blackjackTable.Find(previousTurn)?.activeHand??0;
@@ -153,7 +153,7 @@ namespace BazaarCasino
         {
             int refund=kind==TableKind.Blackjack?blackjackTable.Leave(id,now):rouletteTable.Leave(id);
             var master=FindMaster(id);if(master)Credit(master,refund);
-            joinedTables.Remove(id);ReleaseSeating(id,true);standingPositions.Remove(id);tableRevision++;nextTableBroadcast=0;PayTables();
+            joinedTables.Remove(id);ReleaseSeating(id,true);standingPositions.Remove(id);seatAnchors.Remove(id);tableRevision++;nextTableBroadcast=0;PayTables();
         }
         private string ProcessTable(CharacterMaster master,CasinoRequest request)
         {
@@ -164,7 +164,9 @@ namespace BazaarCasino
                 if(joinedTables.TryGetValue(id,out var own)&&own==kind)LeaveSharedTable(id,kind,now);
                 BroadcastTables();return null;
             }
-            if(Vector3.Distance(master.GetBody().corePosition,table.transform.position)>14)return "Move closer to the table.";
+            if(!joinedTables.TryGetValue(id,out var atTable)||atTable!=kind)
+                if(Vector3.Distance(master.GetBody().corePosition,table.transform.position)>14)return "Move closer to the table.";
+            if(joinedTables.ContainsKey(id)&&seatAnchors.TryGetValue(id,out var currentAnchor)&&currentAnchor.BodyId!=master.GetBody().netId.Value)return "Your character changed. Join the table again.";
             if(sessions.TryGetValue(master,out var privateSession)&&privateSession.hand?.active==true)return "Finish your private blackjack hand first.";
             if(request.action==ActionKind.TableJoin)
             {
@@ -178,9 +180,13 @@ namespace BazaarCasino
                 if(!success)return "Table is full or a round is in progress. Watch, then join the next round.";
                 if(!joinedTables.TryGetValue(id,out var current)||current!=kind)
                 {
-                    standingPositions[id]=master.GetBody().footPosition;
-                    var seat=kind==TableKind.Blackjack?blackjackTable.Find(id):rouletteTable.Find(id);
-                    TeleportHelper.TeleportBody(master.GetBody(),table.ChairFoot(seat.slot),false);
+                    // Capture the root, not native footPosition: non-capsule
+                    // survivors use their centre as footPosition. The owning
+                    // client applies its seat only after receiving this snapshot.
+                    standingPositions[id]=((Component)master.GetBody()).transform.position;
+                    var body=master.GetBody();var ownSeat=kind==TableKind.Blackjack?blackjackTable.Find(id):rouletteTable.Find(id);
+                    var position=table.ChairFoot(ownSeat.slot)+Vector3.up*CasinoSeat.Clearance(body);
+                    seatAnchors[id]=new SeatAnchor(body.netId.Value,ownSeat.slot,position.x,position.y,position.z,table.ChairFacing(ownSeat.slot).eulerAngles.y);
                 }
                 joinedTables[id]=kind;
             }
@@ -193,7 +199,7 @@ namespace BazaarCasino
                     {
                         if(!blackjackTable.CanBet(id))return "Betting is closed.";
                         int amount=request.wager,previous=blackjackTable.Find(id).wager;
-                        if(amount!=0&&(amount<MinimumBet||amount>MaximumBet)||amount<0||(ulong)amount>(ulong)master.money+(uint)previous)return "Invalid wager or insufficient gold.";
+                        if(!WagerRules.Valid(amount,MinimumBet,MaximumBet,(ulong)master.money+(uint)previous,request.allIn,true))return "Invalid wager or insufficient gold.";
                         AdjustReservedGold(master,previous,amount);blackjackTable.Bet(id,amount,now);
                     }
                     else
@@ -202,7 +208,8 @@ namespace BazaarCasino
                         int previous=rouletteTable.Find(id).wager,total=0;
                         var bets=request.bets??Array.Empty<RouletteBet>();
                         uint budget=(uint)Math.Min(uint.MaxValue,(ulong)master.money+(uint)previous);
-                        if(bets.Length>0&&!RouletteBets.Validate(bets,MinimumBet,MaximumBet,budget,out total))return "Invalid chips, total wager, or insufficient gold.";
+                        if(request.allIn&&bets.Length==0)return "All In requires a positive wager.";
+                        if(bets.Length>0&&!RouletteBets.Validate(bets,MinimumBet,MaximumBet,budget,out total,request.allIn))return "Invalid chips, total wager, or insufficient gold.";
                         AdjustReservedGold(master,previous,total);rouletteTable.Bet(id,bets,total,now);
                     }
                 }
@@ -210,7 +217,7 @@ namespace BazaarCasino
                 {
                     var seats=kind==TableKind.Blackjack?blackjackTable.seats:rouletteTable.seats;
                     bool betting=kind==TableKind.Blackjack?blackjackTable.CanStart:rouletteTable.CanStart;
-                    if(!betting||(kind==TableKind.Blackjack&&seats.Any(s=>s.wager==0))||(kind==TableKind.Roulette&&rouletteTable.Find(id).wager==0))return "Place a wager first. Manual start waits for every seated player to bet; automatic start takes 15 seconds.";
+                    if(!betting||(kind==TableKind.Blackjack&&seats.Any(s=>s.wager==0))||(kind==TableKind.Roulette&&rouletteTable.Find(id).wager==0))return "Place a wager first. Manual start waits for every seated player to bet; automatic start takes 5 seconds.";
                     if(kind==TableKind.Blackjack)blackjackTable.Start(rng,now);else rouletteTable.Start(rng.Next(),now);
                 }
                 else
@@ -251,6 +258,13 @@ namespace BazaarCasino
             foreach(var seat in snapshot.seats)
             {
                 seat.seated=joinedTables.TryGetValue(seat.id,out var joined)&&joined==kind;
+                var master=FindMaster(seat.id);var body=master?master.GetBody():null;
+                seat.bodyId=body?body.netId.Value:0;seat.returnRoot=true;
+                if(seat.seated&&seatAnchors.TryGetValue(seat.id,out var anchor))
+                {
+                    seat.bodyId=anchor.BodyId;seat.slot=anchor.Slot;seat.hasAnchor=true;
+                    seat.anchorX=anchor.X;seat.anchorY=anchor.Y;seat.anchorZ=anchor.Z;seat.anchorYaw=anchor.Yaw;
+                }
                 if(seat.seated&&standingPositions.TryGetValue(seat.id,out var standing))
                 {seat.returnX=standing.x;seat.returnY=standing.y;seat.returnZ=standing.z;}
             }

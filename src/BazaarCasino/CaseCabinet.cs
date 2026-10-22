@@ -180,7 +180,7 @@ namespace BazaarCasino
             IsOpening=false;animation=null;
             openButton.text=lastAvailable&&lastPrice>0?"OPEN "+SelectedCount+"x · "+CaseBatchRules.Total(lastPrice,SelectedCount).ToString("N0")+" GOLD":"OPEN CASE";
         }
-        public string GetContextString(Interactor actor)=>"Use Lunar Cache — random item";
+        public string GetContextString(Interactor actor)=>CasinoText.Get("Use Lunar Cache — random item");
         public Interactability GetInteractability(Interactor actor)=>CasinoPlugin.InBazaar?Interactability.Available:Interactability.Disabled;
         public void OnInteractionBegin(Interactor actor)=>CasinoPlugin.Instance?.OpenCaseMachine(actor,this);
         public bool ShouldIgnoreSpherecastForInteractibility(Interactor actor)=>false;

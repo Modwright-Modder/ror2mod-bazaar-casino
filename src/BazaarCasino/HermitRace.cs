@@ -81,7 +81,7 @@ namespace BazaarCasino
             if(wager==0){if(ticket!=null)tickets.Remove(ticket);if(tickets.Count==0)deadline=0;return true;}
             if(ticket==null)tickets.Add(ticket=new RaceTicket{id=id});
             ticket.name=name;ticket.lane=lane;ticket.wager=wager;ticket.payout=0;ticket.paid=false;
-            if(deadline==0)deadline=now+15;
+            if(deadline==0)deadline=now+RoundTiming.BettingSeconds;
             return true;
         }
         public void Tick(double now,int nextSeed)
@@ -97,7 +97,7 @@ namespace BazaarCasino
         public void Finish(double now)
         {
             if(phase!=TablePhase.Playing||run==null)return;
-            winner=run.Winner;phase=TablePhase.Results;deadline=now+6;
+            winner=run.Winner;phase=TablePhase.Results;deadline=now+RoundTiming.ResultsSeconds;
             foreach(var ticket in tickets)ticket.payout=ticket.lane==winner?ticket.wager*Multiplier:0;
         }
         public IEnumerable<RaceTicket> TakePayments()

@@ -18,6 +18,7 @@ namespace BazaarCasino
         private TextMeshProUGUI tableClock,tableNotice,tableWallet,tableHover;
         private string tableMessage="Choose your wager. ESC stands up.";
         private int tableBet=10,tableDrawnRevision=-1,tableDraftRound=-1,sharedCardRound=-1,draftVersion,sentDraftVersion;
+        private bool tableAllIn;
         private bool draftDirty,betInFlight,topTableView;
         private float nextDraftSubmit;
         private readonly List<RouletteBet> tableDraft=new List<RouletteBet>();
@@ -42,13 +43,14 @@ namespace BazaarCasino
                 tableFrame=Rect(tablePanel.transform,"IntegratedTableControls");Stretch(tableFrame);
             }
             tablePanel.SetActive(true);tableDrawnRevision=-1;tableDraftRound=-1;sharedCardRound=-1;
-            draftDirty=betInFlight=false;draftVersion=sentDraftVersion=0;tableDraft.Clear();sharedCardValues.Clear();
+            draftDirty=betInFlight=tableAllIn=false;draftVersion=sentDraftVersion=0;tableDraft.Clear();sharedCardValues.Clear();
             tableMessage=kind==TableKind.Roulette?"Choose a chip · Click felt to add gold · Right-click to remove":"Choose a chip · Add gold or click your chip on the table · Right-click to remove";
             DrawTableControls();Plugin.Send(ActionKind.TableJoin,table:kind);
         }
         internal void CloseSharedTable(bool leave=true)
         {
             bool wasOpen=tablePanel&&tablePanel.activeSelf;
+            if(wasOpen)CloseWagerDialog();
             if(wasOpen&&leave)interactionGate.Close(Time.unscaledTime);
             if(Plugin){Plugin.TableObject(selectedTable)?.PreviewChips(0,null);Plugin.TableObject(selectedTable)?.HoverSpot();}
             draftDirty=betInFlight=false;
@@ -124,12 +126,12 @@ namespace BazaarCasino
             if(snapshot!=null&&tableClock)
             {
                 float left=Plugin.TableTimeLeft(selectedTable);
-                tableClock.text=snapshot.phase==(int)TablePhase.Betting?(left>0?"BETS CLOSE IN "+Mathf.CeilToInt(left)+"s":betInFlight||draftDirty?"PLACING CHIPS…":"Place a wager to start the 15s countdown"):
+                tableClock.text=snapshot.phase==(int)TablePhase.Betting?(left>0?"BETS CLOSE IN "+Mathf.CeilToInt(left)+"s":betInFlight||draftDirty?"PLACING CHIPS…":"Place a wager to start the 5s countdown"):
                     snapshot.phase==(int)TablePhase.Playing?(selectedTable==TableKind.Roulette?"BALL SPINNING · "+Mathf.CeilToInt(left)+"s":(snapshot.turn==MyId?"YOUR TURN":"Turn: "+snapshot.seats.FirstOrDefault(s=>s.id==snapshot.turn)?.name)+" · "+Mathf.CeilToInt(left)+"s"):
                     "Next round in "+Mathf.CeilToInt(left)+"s";
             }
             if(mine?.seated!=true||snapshot.phase!=(int)TablePhase.Betting){Plugin.TableObject(selectedTable)?.HoverSpot();return;}
-            bool overUI=MPEventSystem.readOnlyInstancesList.Any(e=>e&&e.IsPointerOverGameObject());
+            bool overUI=WagerDialogOpen||MPEventSystem.readOnlyInstancesList.Any(e=>e&&e.IsPointerOverGameObject());
             var camera=CameraRigController.readOnlyInstancesList.FirstOrDefault(r=>r&&r.targetBody==(CasinoPlugin.LocalMaster?CasinoPlugin.LocalMaster.GetBody():null))?.sceneCam??Camera.main;
             var table=Plugin.TableObject(selectedTable);
             if(selectedTable==TableKind.Blackjack)
@@ -151,7 +153,7 @@ namespace BazaarCasino
                 betInFlight=true;sentDraftVersion=draftVersion;nextDraftSubmit=Time.unscaledTime+.22f;
                 // Absolute spot totals make retries/idempotent reconciliation safe;
                 // subsequent clicks stay queued until this request is acknowledged.
-                Plugin.Send(ActionKind.TableBet,bets:CopyDraft(),table:selectedTable);
+                Plugin.Send(ActionKind.TableBet,bets:CopyDraft(),table:selectedTable,allIn:tableAllIn);
             }
         }
         private RouletteBet[] CopyDraft()=>tableDraft.Select(b=>new RouletteBet{choice=b.choice,number=b.number,amount=b.amount}).ToArray();
@@ -159,9 +161,16 @@ namespace BazaarCasino
         {
             var mine=Plugin.Snapshot(selectedTable)?.seats.FirstOrDefault(s=>s.id==MyId);
             var spot=tableDraft.FirstOrDefault(b=>b.choice==choice&&b.number==number);
-            if(remove)
+            if(!remove&&tableAllIn)
             {
-                if(spot==null)return;spot.amount=Math.Max(0,spot.amount-tableBet);if(spot.amount==0)tableDraft.Remove(spot);
+                ulong available=TableBudget();
+                if(available==0||available>(ulong)Plugin.MaximumBet){tableMessage="All In exceeds the table limit or your wallet is empty.";DrawTableControls();return;}
+                tableDraft.Clear();tableDraft.Add(spot=new RouletteBet{choice=choice,number=number,amount=(int)available});
+            }
+            else if(remove)
+            {
+                tableAllIn=false;
+                if(spot==null)return;spot.amount=Math.Max(0,spot.amount-tableBet);if(spot.amount<Plugin.MinimumBet)tableDraft.Remove(spot);
             }
             else
             {
@@ -176,6 +185,7 @@ namespace BazaarCasino
         private void ChangeBlackjackWager(bool remove)
         {
             if(Plugin.Waiting)return;
+            tableAllIn=false;
             var snapshot=Plugin.Snapshot(TableKind.Blackjack);var mine=snapshot?.seats.FirstOrDefault(s=>s.id==MyId);
             if(mine?.seated!=true||snapshot.phase!=(int)TablePhase.Betting)return;
             try
@@ -188,7 +198,7 @@ namespace BazaarCasino
         }
         private void TableAction(ActionKind action,int wager=0,string message=null)
         {
-            if(Plugin.Waiting)return;tableMessage=message??"Processing…";if(tableNotice)tableNotice.text=tableMessage;
+            if(Plugin.Waiting)return;tableAllIn=false;tableMessage=message??"Processing…";if(tableNotice)tableNotice.text=tableMessage;
             Plugin.Send(action,wager,table:selectedTable);
             foreach(var entry in sharedButtons)if(entry.Item1)entry.Item1.interactable=entry.Item2&&(entry.Item3||!Plugin.Waiting);
         }
@@ -318,15 +328,17 @@ namespace BazaarCasino
         {
             float w=end-x;
             int minimum=Plugin.MinimumBet,maximum=Plugin.MaximumBet;
-            TableButton(tableFrame,"−",x,y,x+w*.07f,y+.05f,()=>{tableBet=Math.Max(minimum,tableBet-minimum);DrawTableControls();},tableBet>minimum,true);
+            TableButton(tableFrame,"−",x,y,x+w*.07f,y+.05f,()=>{tableAllIn=false;tableBet=Math.Max(minimum,tableBet-minimum);DrawTableControls();},tableBet>minimum,true);
             PlaceText("Chip: "+tableBet.ToString("N0")+" gold",20,Gold,x+w*.075f,y,x+w*.28f,y+.05f);
-            TableButton(tableFrame,"+",x+w*.29f,y,x+w*.36f,y+.05f,()=>{tableBet=(int)Math.Min(maximum,(long)tableBet+minimum);DrawTableControls();},tableBet<maximum,true);
-            var values=WagerRules.Denominations(minimum,maximum);
+            TableButton(tableFrame,"+",x+w*.29f,y,x+w*.36f,y+.05f,()=>{tableAllIn=false;tableBet=(int)Math.Min(maximum,(long)tableBet+minimum);DrawTableControls();},tableBet<maximum,true);
+            var values=WagerRules.Denominations(minimum,maximum).Take(2).ToArray();
             for(int i=0;i<values.Length;i++)
             {
-                int value=values[i];float start=.38f+i*.155f;
-                TableButton(tableFrame,value.ToString("N0"),x+w*start,y,x+w*(start+.145f),y+.05f,()=>{tableBet=value;DrawTableControls();},value>=Plugin.MinimumBet&&value<=Plugin.MaximumBet,true,tableBet==value);
+                int value=values[i];float start=.38f+i*.13f;
+                TableButton(tableFrame,value.ToString("N0"),x+w*start,y,x+w*(start+.12f),y+.05f,()=>{tableAllIn=false;tableBet=value;DrawTableControls();},value>=Plugin.MinimumBet&&value<=Plugin.MaximumBet,true,tableBet==value);
             }
+            TableButton(tableFrame,"Custom",x+w*.65f,y,x+w*.83f,y+.05f,OpenTableAmount,true,true);
+            TableButton(tableFrame,"All In",x+w*.84f,y,end,y+.05f,ChooseTableAllIn,true,true,tableAllIn);
         }
         private Button TableButton(Transform parent,string text,float x0,float y0,float x1,float y1,UnityEngine.Events.UnityAction action,bool enabled,bool local=false,bool primary=false)
         {

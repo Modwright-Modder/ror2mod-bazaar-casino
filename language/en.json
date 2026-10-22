@@ -1,0 +1,1137 @@
+{
+  "language": "en",
+  "entries": [
+    {
+      "key": "+{0} gold",
+      "text": "+{0} gold"
+    },
+    {
+      "key": "1st 12",
+      "text": "1st 12"
+    },
+    {
+      "key": "1st col",
+      "text": "1st col"
+    },
+    {
+      "key": "25 seconds per hand · Use the buttons beside your cards",
+      "text": "25 seconds per hand · Use the buttons beside your cards"
+    },
+    {
+      "key": "2nd 12",
+      "text": "2nd 12"
+    },
+    {
+      "key": "2nd col",
+      "text": "2nd col"
+    },
+    {
+      "key": "3 matching symbols win · A pair returns your wager",
+      "text": "3 matching symbols win · A pair returns your wager"
+    },
+    {
+      "key": "3 matching symbols win • Any pair returns your wager",
+      "text": "3 matching symbols win • Any pair returns your wager"
+    },
+    {
+      "key": "3rd 12",
+      "text": "3rd 12"
+    },
+    {
+      "key": "3rd col",
+      "text": "3rd col"
+    },
+    {
+      "key": "6 decks  •  Dealer stands on all 17s  •  Blackjack pays 3:2",
+      "text": "6 decks  •  Dealer stands on all 17s  •  Blackjack pays 3:2"
+    },
+    {
+      "key": "<color=#FFFFFF>▶ {0}</color>",
+      "text": "<color=#FFFFFF>▶ {0}</color>"
+    },
+    {
+      "key": "Add {0} gold",
+      "text": "Add {0} gold"
+    },
+    {
+      "key": "All In",
+      "text": "All In"
+    },
+    {
+      "key": "All In exceeds the table limit or your wallet is empty.",
+      "text": "All In exceeds the table limit or your wallet is empty."
+    },
+    {
+      "key": "All In may go below the minimum. The maximum still applies.",
+      "text": "All In may go below the minimum. The maximum still applies."
+    },
+    {
+      "key": "All In requires a positive wager.",
+      "text": "All In requires a positive wager."
+    },
+    {
+      "key": "All In selected. Click one spot to replace your bets with your entire gold.",
+      "text": "All In selected. Click one spot to replace your bets with your entire gold."
+    },
+    {
+      "key": "All In selected. Pull the lever to wager your entire gold.",
+      "text": "All In selected. Pull the lever to wager your entire gold."
+    },
+    {
+      "key": "Apply",
+      "text": "Apply"
+    },
+    {
+      "key": "BALL SPINNING · {0}s",
+      "text": "BALL SPINNING · {0}s"
+    },
+    {
+      "key": "BAZAAR JACKPOT",
+      "text": "BAZAAR JACKPOT"
+    },
+    {
+      "key": "BET {0} GOLD",
+      "text": "BET {0} GOLD"
+    },
+    {
+      "key": "BET — GOLD",
+      "text": "BET — GOLD"
+    },
+    {
+      "key": "BETS CLOSE IN {0}s",
+      "text": "BETS CLOSE IN {0}s"
+    },
+    {
+      "key": "BETTING CLOSED",
+      "text": "BETTING CLOSED"
+    },
+    {
+      "key": "BLACK",
+      "text": "BLACK"
+    },
+    {
+      "key": "BLACKJACK",
+      "text": "BLACKJACK"
+    },
+    {
+      "key": "BLACKJACK\n{0}",
+      "text": "BLACKJACK\n{0}"
+    },
+    {
+      "key": "BLACKJACK PAYS 3:2\nDEALER STANDS ON 17",
+      "text": "BLACKJACK PAYS 3:2\nDEALER STANDS ON 17"
+    },
+    {
+      "key": "BLACKJACK • SHARED TABLE",
+      "text": "BLACKJACK • SHARED TABLE"
+    },
+    {
+      "key": "Back to bets",
+      "text": "Back to bets"
+    },
+    {
+      "key": "Ball spinning…",
+      "text": "Ball spinning…"
+    },
+    {
+      "key": "Bet on Hermit Derby — high stakes",
+      "text": "Bet on Hermit Derby — high stakes"
+    },
+    {
+      "key": "Bets close in {0}s",
+      "text": "Bets close in {0}s"
+    },
+    {
+      "key": "Bets open",
+      "text": "Bets open"
+    },
+    {
+      "key": "Betting is closed.",
+      "text": "Betting is closed."
+    },
+    {
+      "key": "Blackjack",
+      "text": "Blackjack"
+    },
+    {
+      "key": "Blackjack and roulette are played at the shared tables. Press E at a table.",
+      "text": "Blackjack and roulette are played at the shared tables. Press E at a table."
+    },
+    {
+      "key": "Blackjack!",
+      "text": "Blackjack!"
+    },
+    {
+      "key": "Bust",
+      "text": "Bust"
+    },
+    {
+      "key": "CASINO LOUNGE",
+      "text": "CASINO LOUNGE"
+    },
+    {
+      "key": "CASINO LOUNGE\nE · Enter",
+      "text": "CASINO LOUNGE\nE · Enter"
+    },
+    {
+      "key": "COMMON → LEGENDARY",
+      "text": "COMMON → LEGENDARY"
+    },
+    {
+      "key": "Cancel",
+      "text": "Cancel"
+    },
+    {
+      "key": "Cancel / Refund",
+      "text": "Cancel / Refund"
+    },
+    {
+      "key": "Case price updated. Review the new price and open again.",
+      "text": "Case price updated. Review the new price and open again."
+    },
+    {
+      "key": "Cases redeemed.",
+      "text": "Cases redeemed."
+    },
+    {
+      "key": "Casino is only available while alive inside the Bazaar.",
+      "text": "Casino is only available while alive inside the Bazaar."
+    },
+    {
+      "key": "Cherry 3×   Lemon 5×   Bell 8×   Star 12×   Seven 25×   Moon 60×",
+      "text": "Cherry 3×   Lemon 5×   Bell 8×   Star 12×   Seven 25×   Moon 60×"
+    },
+    {
+      "key": "Cherry 3×  Lemon 5×  Bell 8×  Star 12×  Seven 25×  Moon 60×",
+      "text": "Cherry 3×  Lemon 5×  Bell 8×  Star 12×  Seven 25×  Moon 60×"
+    },
+    {
+      "key": "Chip: {0} gold",
+      "text": "Chip: {0} gold"
+    },
+    {
+      "key": "Chips placed. The countdown starts with the first chip.",
+      "text": "Chips placed. The countdown starts with the first chip."
+    },
+    {
+      "key": "Choose 1x, 5x or 10x cases.",
+      "text": "Choose 1x, 5x or 10x cases."
+    },
+    {
+      "key": "Choose a batch, then open",
+      "text": "Choose a batch, then open"
+    },
+    {
+      "key": "Choose a chip · Add gold or click your chip on the table · Right-click to remove",
+      "text": "Choose a chip · Add gold or click your chip on the table · Right-click to remove"
+    },
+    {
+      "key": "Choose a chip · Click felt to add gold · Right-click to remove",
+      "text": "Choose a chip · Click felt to add gold · Right-click to remove"
+    },
+    {
+      "key": "Choose your wager. ESC stands up.",
+      "text": "Choose your wager. ESC stands up."
+    },
+    {
+      "key": "Clear",
+      "text": "Clear"
+    },
+    {
+      "key": "Click a spot to add a chip • Right-click to remove one • Each chip = {0} gold • Single zero",
+      "text": "Click a spot to add a chip • Right-click to remove one • Each chip = {0} gold • Single zero"
+    },
+    {
+      "key": "Click felt: place chip · Right-click: remove chip · No confirmation needed",
+      "text": "Click felt: place chip · Right-click: remove chip · No confirmation needed"
+    },
+    {
+      "key": "Click lever to spin",
+      "text": "Click lever to spin"
+    },
+    {
+      "key": "Close",
+      "text": "Close"
+    },
+    {
+      "key": "Collect rewards below",
+      "text": "Collect rewards below"
+    },
+    {
+      "key": "Connecting to host…",
+      "text": "Connecting to host…"
+    },
+    {
+      "key": "Could not apply this seat. Your movement has been restored.",
+      "text": "Could not apply this seat. Your movement has been restored."
+    },
+    {
+      "key": "Custom",
+      "text": "Custom"
+    },
+    {
+      "key": "Custom amount",
+      "text": "Custom amount"
+    },
+    {
+      "key": "DEALER",
+      "text": "DEALER"
+    },
+    {
+      "key": "DEALER  ·  {0}",
+      "text": "DEALER  ·  {0}"
+    },
+    {
+      "key": "DEALER · {0}",
+      "text": "DEALER · {0}"
+    },
+    {
+      "key": "DEALER · {0} + ?",
+      "text": "DEALER · {0} + ?"
+    },
+    {
+      "key": "Deal now",
+      "text": "Deal now"
+    },
+    {
+      "key": "Deal — {0} gold",
+      "text": "Deal — {0} gold"
+    },
+    {
+      "key": "Dealer blackjack",
+      "text": "Dealer blackjack"
+    },
+    {
+      "key": "Dealer bust — you win",
+      "text": "Dealer bust — you win"
+    },
+    {
+      "key": "Dealer wins",
+      "text": "Dealer wins"
+    },
+    {
+      "key": "Derby wager",
+      "text": "Derby wager"
+    },
+    {
+      "key": "Double",
+      "text": "Double"
+    },
+    {
+      "key": "Double +{0}",
+      "text": "Double +{0}"
+    },
+    {
+      "key": "Double requires two cards and enough gold for the extra wager.",
+      "text": "Double requires two cards and enough gold for the extra wager."
+    },
+    {
+      "key": "Double requires two cards and enough gold.",
+      "text": "Double requires two cards and enough gold."
+    },
+    {
+      "key": "Duplicate request ignored.",
+      "text": "Duplicate request ignored."
+    },
+    {
+      "key": "E to join • Gold wagers",
+      "text": "E to join • Gold wagers"
+    },
+    {
+      "key": "E · PLAY SLOTS",
+      "text": "E · PLAY SLOTS"
+    },
+    {
+      "key": "E · Play",
+      "text": "E · Play"
+    },
+    {
+      "key": "E · Play     ESC · Exit",
+      "text": "E · Play     ESC · Exit"
+    },
+    {
+      "key": "E · Use machine",
+      "text": "E · Use machine"
+    },
+    {
+      "key": "ESC · Exit",
+      "text": "ESC · Exit"
+    },
+    {
+      "key": "EVEN",
+      "text": "EVEN"
+    },
+    {
+      "key": "Enter Casino Lounge",
+      "text": "Enter Casino Lounge"
+    },
+    {
+      "key": "Enter a whole number within the limits and your available gold.",
+      "text": "Enter a whole number within the limits and your available gold."
+    },
+    {
+      "key": "Exit · ESC",
+      "text": "Exit · ESC"
+    },
+    {
+      "key": "Finish or cancel your shared table wager first.",
+      "text": "Finish or cancel your shared table wager first."
+    },
+    {
+      "key": "Finish or cancel your table wager first.",
+      "text": "Finish or cancel your table wager first."
+    },
+    {
+      "key": "Finish or cancel your wager at the other table first.",
+      "text": "Finish or cancel your wager at the other table first."
+    },
+    {
+      "key": "Finish your blackjack hand first.",
+      "text": "Finish your blackjack hand first."
+    },
+    {
+      "key": "Finish your private blackjack hand first.",
+      "text": "Finish your private blackjack hand first."
+    },
+    {
+      "key": "Four equal-odds crabs",
+      "text": "Four equal-odds crabs"
+    },
+    {
+      "key": "Gold on table: {0}",
+      "text": "Gold on table: {0}"
+    },
+    {
+      "key": "Gold on table: {0} · Add more until betting closes",
+      "text": "Gold on table: {0} · Add more until betting closes"
+    },
+    {
+      "key": "Gold wagers • gold payouts",
+      "text": "Gold wagers • gold payouts"
+    },
+    {
+      "key": "Gold wallet is full.",
+      "text": "Gold wallet is full."
+    },
+    {
+      "key": "Gold wallet is full; spend gold before refunding.",
+      "text": "Gold wallet is full; spend gold before refunding."
+    },
+    {
+      "key": "Gold {0}",
+      "text": "Gold {0}"
+    },
+    {
+      "key": "Gold: {0}",
+      "text": "Gold: {0}"
+    },
+    {
+      "key": "Gold: —",
+      "text": "Gold: —"
+    },
+    {
+      "key": "HAND 1 · {0} · {1} gold",
+      "text": "HAND 1 · {0} · {1} gold"
+    },
+    {
+      "key": "HAND 2 · {0} · {1} gold",
+      "text": "HAND 2 · {0} · {1} gold"
+    },
+    {
+      "key": "HERMIT DERBY",
+      "text": "HERMIT DERBY"
+    },
+    {
+      "key": "HERMIT DERBY · GOLD {0}",
+      "text": "HERMIT DERBY · GOLD {0}"
+    },
+    {
+      "key": "HERMIT DERBY · HIGH STAKES",
+      "text": "HERMIT DERBY · HIGH STAKES"
+    },
+    {
+      "key": "HERMIT DERBY · RACING",
+      "text": "HERMIT DERBY · RACING"
+    },
+    {
+      "key": "HERMIT DERBY · STARTS IN {0}s",
+      "text": "HERMIT DERBY · STARTS IN {0}s"
+    },
+    {
+      "key": "Hand 1: {0} · Hand 2: {1}",
+      "text": "Hand 1: {0} · Hand 2: {1}"
+    },
+    {
+      "key": "Hit",
+      "text": "Hit"
+    },
+    {
+      "key": "Hit, Stand, or Double.",
+      "text": "Hit, Stand, or Double."
+    },
+    {
+      "key": "Host did not confirm lounge travel. Check that every player uses Bazaar Casino 1.11.0 and the same network MessageId.",
+      "text": "Host did not confirm lounge travel. Check that every player uses Bazaar Casino 1.11.0 and the same network MessageId."
+    },
+    {
+      "key": "Host did not respond. Chips refreshed from the last server state; check all players use the same Casino version.",
+      "text": "Host did not respond. Chips refreshed from the last server state; check all players use the same Casino version."
+    },
+    {
+      "key": "Host did not respond. Install Bazaar Casino on the host and every player; check the network MessageId matches.",
+      "text": "Host did not respond. Install Bazaar Casino on the host and every player; check the network MessageId matches."
+    },
+    {
+      "key": "Host did not respond. Reopen machine.",
+      "text": "Host did not respond. Reopen machine."
+    },
+    {
+      "key": "If win: {0} gold returned (includes {1} stake) · Profit +{2}",
+      "text": "If win: {0} gold returned (includes {1} stake) · Profit +{2}"
+    },
+    {
+      "key": "Insufficient gold or table limit reached.",
+      "text": "Insufficient gold or table limit reached."
+    },
+    {
+      "key": "Invalid chips, total wager, or insufficient gold.",
+      "text": "Invalid chips, total wager, or insufficient gold."
+    },
+    {
+      "key": "Invalid host response for lounge travel. Check matching casino versions.",
+      "text": "Invalid host response for lounge travel. Check matching casino versions."
+    },
+    {
+      "key": "Invalid roulette chips, total wager, or insufficient gold.",
+      "text": "Invalid roulette chips, total wager, or insufficient gold."
+    },
+    {
+      "key": "Invalid table action.",
+      "text": "Invalid table action."
+    },
+    {
+      "key": "Invalid wager or insufficient gold.",
+      "text": "Invalid wager or insufficient gold."
+    },
+    {
+      "key": "Inventory is unavailable.",
+      "text": "Inventory is unavailable."
+    },
+    {
+      "key": "JACKPOT!\n+{0} GOLD",
+      "text": "JACKPOT!\n+{0} GOLD"
+    },
+    {
+      "key": "Join next round",
+      "text": "Join next round"
+    },
+    {
+      "key": "Join this table first (E).",
+      "text": "Join this table first (E)."
+    },
+    {
+      "key": "Join {0} table — play together",
+      "text": "Join {0} table — play together"
+    },
+    {
+      "key": "LUNAR BROKER",
+      "text": "LUNAR BROKER"
+    },
+    {
+      "key": "LUNAR BROKER\n<color=#E8BC54>E · Sell items for gold</color>",
+      "text": "LUNAR BROKER\n<color=#E8BC54>E · Sell items for gold</color>"
+    },
+    {
+      "key": "LUNAR CACHE",
+      "text": "LUNAR CACHE"
+    },
+    {
+      "key": "Launching ball…",
+      "text": "Launching ball…"
+    },
+    {
+      "key": "Leaving the previous seat; try again in a moment.",
+      "text": "Leaving the previous seat; try again in a moment."
+    },
+    {
+      "key": "Loading native Hermit Crabs…",
+      "text": "Loading native Hermit Crabs…"
+    },
+    {
+      "key": "Loading reward pool…",
+      "text": "Loading reward pool…"
+    },
+    {
+      "key": "Lounge is not available yet.",
+      "text": "Lounge is not available yet."
+    },
+    {
+      "key": "Lounge travel expired because your character or scene changed. Press E again.",
+      "text": "Lounge travel expired because your character or scene changed. Press E again."
+    },
+    {
+      "key": "Lunar Cache is unavailable.",
+      "text": "Lunar Cache is unavailable."
+    },
+    {
+      "key": "Minimum: {0} · Maximum: {1}\nAvailable: {2}",
+      "text": "Minimum: {0} · Maximum: {1}\nAvailable: {2}"
+    },
+    {
+      "key": "Move closer to the Hermit Derby betting desk.",
+      "text": "Move closer to the Hermit Derby betting desk."
+    },
+    {
+      "key": "Move closer to the Lunar Cache machine.",
+      "text": "Move closer to the Lunar Cache machine."
+    },
+    {
+      "key": "Move closer to the lounge door.",
+      "text": "Move closer to the lounge door."
+    },
+    {
+      "key": "Move closer to the slot machine.",
+      "text": "Move closer to the slot machine."
+    },
+    {
+      "key": "Move closer to the table.",
+      "text": "Move closer to the table."
+    },
+    {
+      "key": "NO MATCH",
+      "text": "NO MATCH"
+    },
+    {
+      "key": "NUMBER {0} · Returned {1} gold · Net {2}",
+      "text": "NUMBER {0} · Returned {1} gold · Net {2}"
+    },
+    {
+      "key": "Native Hermit Crab unavailable",
+      "text": "Native Hermit Crab unavailable"
+    },
+    {
+      "key": "Native Hermit Crabs are still loading; try again shortly.",
+      "text": "Native Hermit Crabs are still loading; try again shortly."
+    },
+    {
+      "key": "Next round in {0}s",
+      "text": "Next round in {0}s"
+    },
+    {
+      "key": "No active blackjack hand.",
+      "text": "No active blackjack hand."
+    },
+    {
+      "key": "No case rewards are available in this run.",
+      "text": "No case rewards are available in this run."
+    },
+    {
+      "key": "No host reply · Reopen to refresh",
+      "text": "No host reply · Reopen to refresh"
+    },
+    {
+      "key": "No host reply · reopen to refresh",
+      "text": "No host reply · reopen to refresh"
+    },
+    {
+      "key": "No match",
+      "text": "No match"
+    },
+    {
+      "key": "No sellable permanent items in your inventory.",
+      "text": "No sellable permanent items in your inventory."
+    },
+    {
+      "key": "No server connection for lounge travel.",
+      "text": "No server connection for lounge travel."
+    },
+    {
+      "key": "No server connection.",
+      "text": "No server connection."
+    },
+    {
+      "key": "Not enough gold",
+      "text": "Not enough gold"
+    },
+    {
+      "key": "Not enough gold or table limit reached.",
+      "text": "Not enough gold or table limit reached."
+    },
+    {
+      "key": "Not enough gold to open these cases.",
+      "text": "Not enough gold to open these cases."
+    },
+    {
+      "key": "Not enough gold.",
+      "text": "Not enough gold."
+    },
+    {
+      "key": "Number",
+      "text": "Number"
+    },
+    {
+      "key": "ODD",
+      "text": "ODD"
+    },
+    {
+      "key": "OPEN CASE",
+      "text": "OPEN CASE"
+    },
+    {
+      "key": "OPEN {0}x · {1} GOLD",
+      "text": "OPEN {0}x · {1} GOLD"
+    },
+    {
+      "key": "OPENING…",
+      "text": "OPENING…"
+    },
+    {
+      "key": "On table: {0} gold",
+      "text": "On table: {0} gold"
+    },
+    {
+      "key": "Opening {0} cases…",
+      "text": "Opening {0} cases…"
+    },
+    {
+      "key": "PLACING CHIPS…",
+      "text": "PLACING CHIPS…"
+    },
+    {
+      "key": "PULL",
+      "text": "PULL"
+    },
+    {
+      "key": "Payouts include your wager. ESC / F6 to close.",
+      "text": "Payouts include your wager. ESC / F6 to close."
+    },
+    {
+      "key": "Place a wager first. Manual start waits for every seated player to bet; automatic start takes 5 seconds.",
+      "text": "Place a wager first. Manual start waits for every seated player to bet; automatic start takes 5 seconds."
+    },
+    {
+      "key": "Place a wager to start the 5s countdown",
+      "text": "Place a wager to start the 5s countdown"
+    },
+    {
+      "key": "Placing All In wager…",
+      "text": "Placing All In wager…"
+    },
+    {
+      "key": "Play Slots — Bazaar Jackpot",
+      "text": "Play Slots — Bazaar Jackpot"
+    },
+    {
+      "key": "Please wait for the current action.",
+      "text": "Please wait for the current action."
+    },
+    {
+      "key": "Processing…",
+      "text": "Processing…"
+    },
+    {
+      "key": "Pull lever — {0} gold",
+      "text": "Pull lever — {0} gold"
+    },
+    {
+      "key": "Push",
+      "text": "Push"
+    },
+    {
+      "key": "RACING · They might dig in any moment!",
+      "text": "RACING · They might dig in any moment!"
+    },
+    {
+      "key": "RED",
+      "text": "RED"
+    },
+    {
+      "key": "RESULT: {0} • Next round soon",
+      "text": "RESULT: {0} • Next round soon"
+    },
+    {
+      "key": "RETURN TO BAZAAR\nE · Exit lounge",
+      "text": "RETURN TO BAZAAR\nE · Exit lounge"
+    },
+    {
+      "key": "ROULETTE",
+      "text": "ROULETTE"
+    },
+    {
+      "key": "ROULETTE\n{0}",
+      "text": "ROULETTE\n{0}"
+    },
+    {
+      "key": "ROULETTE • SHARED TABLE",
+      "text": "ROULETTE • SHARED TABLE"
+    },
+    {
+      "key": "Race wager updated.",
+      "text": "Race wager updated."
+    },
+    {
+      "key": "Random item drops",
+      "text": "Random item drops"
+    },
+    {
+      "key": "Refund all",
+      "text": "Refund all"
+    },
+    {
+      "key": "Refund requested…",
+      "text": "Refund requested…"
+    },
+    {
+      "key": "Return to Bazaar",
+      "text": "Return to Bazaar"
+    },
+    {
+      "key": "Returned to Bazaar.",
+      "text": "Returned to Bazaar."
+    },
+    {
+      "key": "Returned {0} gold",
+      "text": "Returned {0} gold"
+    },
+    {
+      "key": "Review the scaled minimum and maximum stake. All In must use your entire available gold.",
+      "text": "Review the scaled minimum and maximum stake. All In must use your entire available gold."
+    },
+    {
+      "key": "Roulette",
+      "text": "Roulette"
+    },
+    {
+      "key": "Roulette chip amount",
+      "text": "Roulette chip amount"
+    },
+    {
+      "key": "Roulette: {0} — no win",
+      "text": "Roulette: {0} — no win"
+    },
+    {
+      "key": "Roulette: {0} — win",
+      "text": "Roulette: {0} — win"
+    },
+    {
+      "key": "Round complete • Next round soon",
+      "text": "Round complete • Next round soon"
+    },
+    {
+      "key": "SPIN",
+      "text": "SPIN"
+    },
+    {
+      "key": "SPINNING…",
+      "text": "SPINNING…"
+    },
+    {
+      "key": "STARTS IN {0}s · Betting open",
+      "text": "STARTS IN {0}s · Betting open"
+    },
+    {
+      "key": "Seat View",
+      "text": "Seat View"
+    },
+    {
+      "key": "Select an item",
+      "text": "Select an item"
+    },
+    {
+      "key": "Select an item to sell for gold.",
+      "text": "Select an item to sell for gold."
+    },
+    {
+      "key": "Sell 1 for {0} gold",
+      "text": "Sell 1 for {0} gold"
+    },
+    {
+      "key": "Sell Items — Lunar Broker",
+      "text": "Sell Items — Lunar Broker"
+    },
+    {
+      "key": "Sell one permanent item at a time. Select an item, then confirm the sale.",
+      "text": "Sell one permanent item at a time. Select an item, then confirm the sale."
+    },
+    {
+      "key": "Slot machine is unavailable.",
+      "text": "Slot machine is unavailable."
+    },
+    {
+      "key": "Slot wager",
+      "text": "Slot wager"
+    },
+    {
+      "key": "Slots payout!",
+      "text": "Slots payout!"
+    },
+    {
+      "key": "Sold 1 {0} for {1} gold.",
+      "text": "Sold 1 {0} for {1} gold."
+    },
+    {
+      "key": "Spin now",
+      "text": "Spin now"
+    },
+    {
+      "key": "Split +{0}",
+      "text": "Split +{0}"
+    },
+    {
+      "key": "Split needs a matching pair and enough gold for a second hand.",
+      "text": "Split needs a matching pair and enough gold for a second hand."
+    },
+    {
+      "key": "Stake: {0} gold",
+      "text": "Stake: {0} gold"
+    },
+    {
+      "key": "Stake: —",
+      "text": "Stake: —"
+    },
+    {
+      "key": "Stand",
+      "text": "Stand"
+    },
+    {
+      "key": "Stand up / Exit",
+      "text": "Stand up / Exit"
+    },
+    {
+      "key": "Stand up from your table first.",
+      "text": "Stand up from your table first."
+    },
+    {
+      "key": "Table is full or a round is in progress. Watch, then join the next round.",
+      "text": "Table is full or a round is in progress. Watch, then join the next round."
+    },
+    {
+      "key": "Table is not available yet.",
+      "text": "Table is not available yet."
+    },
+    {
+      "key": "Table updated.",
+      "text": "Table updated."
+    },
+    {
+      "key": "Talk to the Lunar Broker inside the lounge to sell items.",
+      "text": "Talk to the Lunar Broker inside the lounge to sell items."
+    },
+    {
+      "key": "The host uses an older lounge travel protocol. Update Bazaar Casino to 1.11.0 on every player.",
+      "text": "The host uses an older lounge travel protocol. Update Bazaar Casino to 1.11.0 on every player."
+    },
+    {
+      "key": "The race is underway. Betting opens after the result.",
+      "text": "The race is underway. Betting opens after the result."
+    },
+    {
+      "key": "This item cannot be sold.",
+      "text": "This item cannot be sold."
+    },
+    {
+      "key": "This machine is still spinning. Try again in a moment.",
+      "text": "This machine is still spinning. Try again in a moment."
+    },
+    {
+      "key": "Top View",
+      "text": "Top View"
+    },
+    {
+      "key": "Top view",
+      "text": "Top view"
+    },
+    {
+      "key": "Total blackjack wager",
+      "text": "Total blackjack wager"
+    },
+    {
+      "key": "Total wager paid: {0} gold",
+      "text": "Total wager paid: {0} gold"
+    },
+    {
+      "key": "Track view",
+      "text": "Track view"
+    },
+    {
+      "key": "Turn: {0} · {1}s",
+      "text": "Turn: {0} · {1}s"
+    },
+    {
+      "key": "UNAVAILABLE",
+      "text": "UNAVAILABLE"
+    },
+    {
+      "key": "Undo chip",
+      "text": "Undo chip"
+    },
+    {
+      "key": "Unknown action.",
+      "text": "Unknown action."
+    },
+    {
+      "key": "Use E on a slot machine inside the Casino Lounge.",
+      "text": "Use E on a slot machine inside the Casino Lounge."
+    },
+    {
+      "key": "Use Lunar Cache — random item",
+      "text": "Use Lunar Cache — random item"
+    },
+    {
+      "key": "V · View",
+      "text": "V · View"
+    },
+    {
+      "key": "WAGER 10",
+      "text": "WAGER 10"
+    },
+    {
+      "key": "WAGER RETURNED",
+      "text": "WAGER RETURNED"
+    },
+    {
+      "key": "WAGER {0}",
+      "text": "WAGER {0}"
+    },
+    {
+      "key": "WAITING…",
+      "text": "WAITING…"
+    },
+    {
+      "key": "WIN! +{0} GOLD",
+      "text": "WIN! +{0} GOLD"
+    },
+    {
+      "key": "WINNER · {0}",
+      "text": "WINNER · {0}"
+    },
+    {
+      "key": "WINNER · {0} · Next bets in {1}s",
+      "text": "WINNER · {0} · Next bets in {1}s"
+    },
+    {
+      "key": "Wager outside the allowed range or insufficient gold.",
+      "text": "Wager outside the allowed range or insufficient gold."
+    },
+    {
+      "key": "Wager: 10",
+      "text": "Wager: 10"
+    },
+    {
+      "key": "Wager: {0}",
+      "text": "Wager: {0}"
+    },
+    {
+      "key": "Wait for your blackjack turn.",
+      "text": "Wait for your blackjack turn."
+    },
+    {
+      "key": "Waiting for Bazaar scene setup.",
+      "text": "Waiting for Bazaar scene setup."
+    },
+    {
+      "key": "Waiting for host…",
+      "text": "Waiting for host…"
+    },
+    {
+      "key": "Watch the dealer and other players while waiting for your turn",
+      "text": "Watch the dealer and other players while waiting for your turn"
+    },
+    {
+      "key": "Watch the table. Join when betting opens.",
+      "text": "Watch the table. Join when betting opens."
+    },
+    {
+      "key": "Welcome to the Bazaar Casino.",
+      "text": "Welcome to the Bazaar Casino."
+    },
+    {
+      "key": "Welcome to the Casino Lounge.",
+      "text": "Welcome to the Casino Lounge."
+    },
+    {
+      "key": "Win returns 4×, including your stake",
+      "text": "Win returns 4×, including your stake"
+    },
+    {
+      "key": "YOU WIN\n+{0} GOLD",
+      "text": "YOU WIN\n+{0} GOLD"
+    },
+    {
+      "key": "YOUR HAND",
+      "text": "YOUR HAND"
+    },
+    {
+      "key": "YOUR HAND  ·  {0}",
+      "text": "YOUR HAND  ·  {0}"
+    },
+    {
+      "key": "YOUR HAND · {0} · {1} gold",
+      "text": "YOUR HAND · {0} · {1} gold"
+    },
+    {
+      "key": "YOUR TURN · {0}s",
+      "text": "YOUR TURN · {0}s"
+    },
+    {
+      "key": "You win",
+      "text": "You win"
+    },
+    {
+      "key": "Your case is still opening.",
+      "text": "Your case is still opening."
+    },
+    {
+      "key": "Your character changed. Join the table again.",
+      "text": "Your character changed. Join the table again."
+    },
+    {
+      "key": "Your reward is dispensing.",
+      "text": "Your reward is dispensing."
+    },
+    {
+      "key": "Zero",
+      "text": "Zero"
+    },
+    {
+      "key": "{0}\nWaiting",
+      "text": "{0}\nWaiting"
+    },
+    {
+      "key": "{0}\n{1} · {2} gold",
+      "text": "{0}\n{1} · {2} gold"
+    },
+    {
+      "key": "{0}  |  Returned: {1} gold  |  Net: {2}",
+      "text": "{0}  |  Returned: {1} gold  |  Net: {2}"
+    },
+    {
+      "key": "{0} essences · collect below",
+      "text": "{0} essences · collect below"
+    },
+    {
+      "key": "{0} items · collect below",
+      "text": "{0} items · collect below"
+    },
+    {
+      "key": "{0} · Click +{1} gold · Right-click −{2} · On spot: {3}",
+      "text": "{0} · Click +{1} gold · Right-click −{2} · On spot: {3}"
+    },
+    {
+      "key": "{0} · Returned {1} · Net {2}",
+      "text": "{0} · Returned {1} · Net {2}"
+    },
+    {
+      "key": "{0}: {1} gold · sending to host…",
+      "text": "{0}: {1} gold · sending to host…"
+    },
+    {
+      "key": "▶ HAND 1 · {0} · {1} gold",
+      "text": "▶ HAND 1 · {0} · {1} gold"
+    },
+    {
+      "key": "▶ HAND 2 · {0} · {1} gold",
+      "text": "▶ HAND 2 · {0} · {1} gold"
+    }
+  ]
+}

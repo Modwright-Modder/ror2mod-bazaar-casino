@@ -49,7 +49,7 @@ namespace BazaarCasino
             var label = labelObj.AddComponent<TextMeshPro>();
             var template = Resources.FindObjectsOfTypeAll<TextMeshProUGUI>().FirstOrDefault(t => t && t.font);
             if (template) label.font = template.font;
-            label.text = "LUNAR BROKER\n<color=#E8BC54>E · Sell items for gold</color>"; label.fontSize = 3; label.alignment = TextAlignmentOptions.Center;
+            CasinoText.Bind(label);label.text = "LUNAR BROKER\n<color=#E8BC54>E · Sell items for gold</color>"; label.fontSize = 3; label.alignment = TextAlignmentOptions.Center;
             label.rectTransform.sizeDelta = new Vector2(5,1.2f);
         }
         private GameObject Part(string name, PrimitiveType type, Vector3 position, Vector3 size, Color color)
@@ -60,7 +60,7 @@ namespace BazaarCasino
             var material = new Material(renderer.sharedMaterial); material.color = color; renderer.sharedMaterial = material; materials.Add(material);
             return obj;
         }
-        public string GetContextString(Interactor activator) => "Sell Items — Lunar Broker";
+        public string GetContextString(Interactor activator) => CasinoText.Get("Sell Items — Lunar Broker");
         public Interactability GetInteractability(Interactor activator) => CasinoPlugin.InBazaar ? Interactability.Available : Interactability.Disabled;
         public void OnInteractionBegin(Interactor activator) => CasinoPlugin.Instance?.OpenDealer(activator, gameObject);
         public bool ShouldIgnoreSpherecastForInteractibility(Interactor activator) => false;

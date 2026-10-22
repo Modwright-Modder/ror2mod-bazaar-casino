@@ -126,7 +126,7 @@ namespace BazaarCasino
         private void UpdateClock()
         {
             double remaining=Math.Max(0,(snapshot?.remaining??0)-(Time.unscaledTime-receivedAt));
-            clock.text=NativeHermitAssets.Failed||modelFailure?"Native Hermit Crab unavailable":!ModelsReady?"Loading native Hermit Crabs…":snapshot==null?"Waiting for host…":snapshot.phase==1?"RACING · They might dig in any moment!":snapshot.phase==2?"WINNER · "+Names[Mathf.Clamp(snapshot.winner,0,3)]+" · Next bets in "+Math.Ceiling(remaining)+"s":remaining>0?"STARTS IN "+Math.Ceiling(remaining)+"s · Betting open":"Place a wager to start the 15s countdown";
+            clock.text=NativeHermitAssets.Failed||modelFailure?"Native Hermit Crab unavailable":!ModelsReady?"Loading native Hermit Crabs…":snapshot==null?"Waiting for host…":snapshot.phase==1?"RACING · They might dig in any moment!":snapshot.phase==2?"WINNER · "+Names[Mathf.Clamp(snapshot.winner,0,3)]+" · Next bets in "+Math.Ceiling(remaining)+"s":remaining>0?"STARTS IN "+Math.Ceiling(remaining)+"s · Betting open":"Place a wager to start the 5s countdown";
             scoreboard.text=snapshot?.phase==2?"WINNER · "+Names[Mathf.Clamp(snapshot.winner,0,3)]:snapshot?.phase==1?"HERMIT DERBY · RACING":remaining>0?"HERMIT DERBY · STARTS IN "+Math.Ceiling(remaining)+"s":"HERMIT DERBY";
         }
         internal int Hover(Ray ray,bool enabled)=>panel.Hover(ray,enabled&&ModelsReady,true);
@@ -141,7 +141,7 @@ namespace BazaarCasino
             var ticket=snapshot?.tickets?.FirstOrDefault(t=>t.id==owner);
             receipt.text=message??(ticket!=null?(snapshot.phase==2?"Returned "+ticket.payout.ToString("N0")+" gold":"Paid "+ticket.wager.ToString("N0")+" gold · "+Names[ticket.lane]):"Gold "+gold.ToString("N0")+" · Min "+(snapshot?.minimum??0).ToString("N0"));
         }
-        public string GetContextString(Interactor actor)=>"Bet on Hermit Derby — high stakes";
+        public string GetContextString(Interactor actor)=>CasinoText.Get("Bet on Hermit Derby — high stakes");
         public Interactability GetInteractability(Interactor actor)=>CasinoPlugin.InBazaar?Interactability.Available:Interactability.Disabled;
         public void OnInteractionBegin(Interactor actor)=>CasinoPlugin.Instance?.OpenRace(actor,this);
         public bool ShouldIgnoreSpherecastForInteractibility(Interactor actor)=>false;

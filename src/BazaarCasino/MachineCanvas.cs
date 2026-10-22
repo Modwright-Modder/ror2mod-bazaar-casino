@@ -37,7 +37,7 @@ namespace BazaarCasino
         internal TextMeshProUGUI Text(Transform parent,string value,float size,Color color,TextAlignmentOptions alignment=TextAlignmentOptions.Center)
         {
             var label=Rect(parent,"Cabinet text").gameObject.AddComponent<TextMeshProUGUI>();
-            label.font=font;label.text=value;label.fontSize=size;label.color=color;label.alignment=alignment;
+            CasinoText.Bind(label);label.font=font;label.text=value;label.fontSize=size;label.color=color;label.alignment=alignment;
             label.raycastTarget=false;label.enableWordWrapping=false;label.overflowMode=TextOverflowModes.Ellipsis;return label;
         }
         internal TextMeshProUGUI Text(string value,float size,Color color,float x0,float y0,float x1,float y1)

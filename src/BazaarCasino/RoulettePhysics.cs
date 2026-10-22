@@ -6,7 +6,7 @@ namespace BazaarCasino
     [Serializable] public class RouletteBet { public int choice, number, amount; }
     public static class RouletteBets
     {
-        public static bool Validate(RouletteBet[] bets, int minimum, int maximum, uint gold, out int total)
+        public static bool Validate(RouletteBet[] bets, int minimum, int maximum, uint gold, out int total, bool allIn=false)
         {
             total = 0;
             if (bets == null || bets.Length == 0 || bets.Length > 49) return false;
@@ -14,10 +14,10 @@ namespace BazaarCasino
             var spots = new HashSet<int>();
             foreach (var bet in bets)
             {
-                if (bet == null || bet.choice < 0 || bet.choice > 12 || bet.number < 0 || bet.number > 36 || bet.amount < minimum || bet.amount > maximum || !spots.Add(bet.choice * 37 + (bet.choice == 6 ? bet.number : 0))) return false;
+                if (bet == null || bet.choice < 0 || bet.choice > 12 || bet.number < 0 || bet.number > 36 || bet.amount < (allIn?1:minimum) || bet.amount > maximum || !spots.Add(bet.choice * 37 + (bet.choice == 6 ? bet.number : 0))) return false;
                 sum += bet.amount;
             }
-            if (sum > maximum || sum > gold) return false;
+            if (sum > int.MaxValue || !WagerRules.Valid((int)sum,minimum,maximum,gold,allIn)) return false;
             total = (int)sum; return true;
         }
         public static int Payout(RouletteBet[] bets, int number)

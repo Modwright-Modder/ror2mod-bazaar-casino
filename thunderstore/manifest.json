@@ -1,6 +1,6 @@
 {
   "name": "BazaarCasino",
-  "version_number": "1.10.6",
+  "version_number": "1.11.1",
   "website_url": "https://github.com/Modwright-Modder/ror2mod-bazaar-casino",
   "description": "A multiplayer casino lounge with shared blackjack/roulette, 3D slots, native Hermit Crab racing, 1x/5x/10x Command-compatible item cases, gold broker and original BGM. Bigger Bazaar pricing integration.",
   "dependencies": [

@@ -12,6 +12,16 @@ try {
     $pluginText = Get-Content -LiteralPath 'src/BazaarCasino/CasinoPlugin.cs' -Raw
     $pluginVersion = [regex]::Match($pluginText, '\[BepInPlugin\("[^"]+", "[^"]+", "([^"]+)"\)\]').Groups[1].Value
     if ($pluginVersion -ne $manifest.version_number) { throw 'Manifest and BepInPlugin versions differ' }
+    foreach ($readme in @('README.md','thunderstore/README.md')) {
+        $readmeText=[IO.File]::ReadAllText((Join-Path $projectRoot $readme),[Text.Encoding]::UTF8)
+        $latest=[regex]::Match($readmeText,'(?ms)^## Update history\s*\r?\n+### ([0-9.]+)')
+        if (!$latest.Success -or $latest.Groups[1].Value -ne $manifest.version_number) { throw "Prepend short release notes for $($manifest.version_number) to $readme using scripts/add-release-notes.ps1" }
+        $historyStart=[regex]::Match($readmeText,'(?m)^## Update history[^\r\n]*\r?\n')
+        if ([regex]::IsMatch($readmeText.Substring($historyStart.Index+$historyStart.Length),'(?m)^## ')) { throw "Update history must be the last section in $readme" }
+    }
+    $englishPath=Join-Path $projectRoot 'language/en.json'
+    $english=[IO.File]::ReadAllText($englishPath,[Text.Encoding]::UTF8)|ConvertFrom-Json
+    if (!$english.entries -or $english.entries.Count -lt 1) { throw 'English language template is missing/empty' }
     $iconPath = Join-Path $projectRoot 'thunderstore/icon.png'
     $icon = [IO.File]::ReadAllBytes($iconPath)
     if ($icon.Length -lt 24 -or [BitConverter]::ToString($icon[0..7]) -ne '89-50-4E-47-0D-0A-1A-0A') { throw 'icon.png must be PNG' }
@@ -42,6 +52,19 @@ try {
             'Cards-LICENSE.txt'=(Join-Path $projectRoot 'Cards-LICENSE.txt')
             'THIRD_PARTY_NOTICES.md'=(Join-Path $projectRoot 'THIRD_PARTY_NOTICES.md')
             'plugins/BazaarCasino/BazaarCasino.dll'=$dllPath
+        }
+        # Keep the technical reference and supplied screenshots with the package.
+        # The listing README uses GitHub image URLs; repo README uses local paths.
+        $docsPath = Join-Path $projectRoot 'docs'
+        if (Test-Path -LiteralPath $docsPath -PathType Container) {
+            foreach ($doc in Get-ChildItem -LiteralPath $docsPath -File -Recurse) {
+                $relativePath = [IO.Path]::GetRelativePath($projectRoot, $doc.FullName).Replace('\','/')
+                $files[$relativePath] = $doc.FullName
+            }
+        }
+        foreach ($file in Get-ChildItem -LiteralPath (Join-Path $projectRoot 'language') -File -Recurse) {
+            $relative=[IO.Path]::GetRelativePath((Join-Path $projectRoot 'language'),$file.FullName).Replace('\','/')
+            $files['plugins/BazaarCasino/language/'+$relative]=$file.FullName
         }
         foreach ($name in $files.Keys) {
             $entry = $archive.CreateEntry($name,[IO.Compression.CompressionLevel]::Optimal)

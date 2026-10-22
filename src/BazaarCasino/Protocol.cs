@@ -14,16 +14,17 @@ namespace BazaarCasino
         public int number;
         public RouletteBet[] bets;
         public byte table;
+        public bool allIn;
         public override void Serialize(NetworkWriter w)
         {
-            w.Write((ushort)200); w.Write(requestId); w.Write(masterId); w.Write((byte)action); w.Write(wager); w.Write(choice); w.Write(number); w.Write(table);
+            w.Write((ushort)203); w.Write(requestId); w.Write(masterId); w.Write((byte)action); w.Write(wager); w.Write(choice); w.Write(number); w.Write(table); w.Write(allIn);
             w.Write((byte)(bets?.Length ?? 0));
             if (bets != null) foreach(var bet in bets) { w.Write(bet.choice); w.Write(bet.number); w.Write(bet.amount); }
         }
         public override void Deserialize(NetworkReader r)
         {
-            if(r.ReadUInt16()!=200)throw new InvalidOperationException("Casino version mismatch; use 1.10.x on every player");
-            requestId = r.ReadUInt32(); masterId = r.ReadUInt32(); action = (ActionKind)r.ReadByte(); wager = r.ReadInt32(); choice = r.ReadInt32(); number = r.ReadInt32(); table=r.ReadByte();
+            if(r.ReadUInt16()!=203)throw new InvalidOperationException("Casino version mismatch; use 1.11.0 on the host and every player");
+            requestId = r.ReadUInt32(); masterId = r.ReadUInt32(); action = (ActionKind)r.ReadByte(); wager = r.ReadInt32(); choice = r.ReadInt32(); number = r.ReadInt32(); table=r.ReadByte(); allIn=r.ReadBoolean();
             int count = r.ReadByte(); if(count>49) throw new InvalidOperationException("Too many roulette spots");
             bets = new RouletteBet[count];
             for(int i=0;i<count;i++) bets[i]=new RouletteBet { choice=r.ReadInt32(), number=r.ReadInt32(), amount=r.ReadInt32() };

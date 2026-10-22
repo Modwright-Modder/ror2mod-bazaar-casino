@@ -233,7 +233,7 @@ namespace BazaarCasino
         {
             var obj=new GameObject(name);obj.transform.SetParent(parent?parent:transform,false);obj.transform.localPosition=position;
             var label=obj.AddComponent<TextMeshPro>();if(tableFont)label.font=tableFont;
-            label.text=text;label.fontSize=size;label.color=color;label.alignment=TextAlignmentOptions.Center;label.rectTransform.sizeDelta=bounds;return label;
+            CasinoText.Bind(label);label.text=text;label.fontSize=size;label.color=color;label.alignment=TextAlignmentOptions.Center;label.rectTransform.sizeDelta=bounds;return label;
         }
         private SpriteRenderer Sprite(string name,string asset,Vector3 position,float width,float height,Transform parent=null)
         {
@@ -416,7 +416,7 @@ namespace BazaarCasino
             var camera=CasinoBillboard.ViewCamera;if(!camera)return;title.transform.rotation=camera.transform.rotation;
             foreach(var label in names.Values)label.transform.rotation=camera.transform.rotation;
         }
-        public string GetContextString(Interactor actor)=>"Join "+Kind+" table — play together";
+        public string GetContextString(Interactor actor)=>CasinoText.Get("Join "+Kind+" table — play together");
         public Interactability GetInteractability(Interactor actor)=>CasinoPlugin.InBazaar?Interactability.Available:Interactability.Disabled;
         public void OnInteractionBegin(Interactor actor)=>CasinoPlugin.Instance?.OpenTable(actor,this);
         public bool ShouldIgnoreSpherecastForInteractibility(Interactor actor)=>false;

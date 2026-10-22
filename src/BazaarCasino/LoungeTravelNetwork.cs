@@ -44,7 +44,7 @@ namespace BazaarCasino
         {
             message=message??"Lounge travel failed. Press E again.";
             ui.Notify(message);
-            Chat.AddMessage("<color=#E8CD80>[Casino]</color> "+message);
+            Chat.AddMessage("<color=#E8CD80>[Casino]</color> "+CasinoText.Get(message));
             Logger.LogWarning("Lounge travel: "+message);
         }
     }

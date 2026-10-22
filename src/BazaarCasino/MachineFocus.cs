@@ -11,6 +11,7 @@ namespace BazaarCasino
         // Invisible screen roots only own cursor lifetime. Cabinets draw all
         // visible controls with world canvases and raycast their own panels.
         private GameObject slotPanel;
+        private bool slotAllIn;
         private CharacterModel slotModel;
         private readonly Dictionary<Renderer,bool> machineAvatarRenderers=new Dictionary<Renderer,bool>();
         private readonly List<CameraRigController> slotCameras=new List<CameraRigController>();
@@ -19,7 +20,7 @@ namespace BazaarCasino
         private void OpenSlotOverlay(WorldSlotMachine machine)
         {
             if(!machine||!CasinoPlugin.InBazaar||!CasinoPlugin.LocalMaster||!Init())return;
-            Close();activeSlotMachine=machine;bet=Mathf.Clamp(bet,Plugin.MinimumBet,Plugin.MaximumBet);BuildSlotOverlay();HideMachineAvatar();
+            Close();slotAllIn=false;activeSlotMachine=machine;bet=Mathf.Clamp(bet,Plugin.MinimumBet,Plugin.MaximumBet);BuildSlotOverlay();HideMachineAvatar();
             slotResponse="Click lever to spin";slotPanel.SetActive(true);machine.SetFocus(true);AttachSlotCamera();Plugin.Send(ActionKind.State);
         }
         private void BuildSlotOverlay()
@@ -27,6 +28,9 @@ namespace BazaarCasino
             if(slotPanel)return;
             slotPanel=Rect(canvasRoot.transform,"SlotCursorLifetime").gameObject;Stretch((RectTransform)slotPanel.transform);slotPanel.SetActive(false);
             slotPanel.AddComponent<MPEventSystemProvider>().fallBackToMainEventSystem=true;slotPanel.AddComponent<CursorOpener>();
+            var custom=Button(slotPanel.transform,"Custom amount",()=>OpenWagerDialog("Slot wager",Plugin.MinimumBet,Plugin.MaximumBet,()=>CasinoPlugin.LocalMaster.money,(amount,all)=>{bet=amount;slotAllIn=all;},bet));
+            Anchors((RectTransform)custom.transform,.32f,.06f,.49f,.115f);
+            var allIn=Button(slotPanel.transform,"All In",()=>SetSlotAllIn());Anchors((RectTransform)allIn.transform,.51f,.06f,.68f,.115f);
         }
         private void HideMachineAvatar()
         {
@@ -41,7 +45,8 @@ namespace BazaarCasino
         private void PullWorldSlot()
         {
             if(!IsSlotFocused||activeSlotMachine.IsSpinning||Plugin.Waiting)return;
-            slotResponse="Waiting for host…";Plugin.Send(ActionKind.Slots,bet,number:activeSlotMachine.Index+1);
+            if(slotAllIn&&!TryAllIn(CasinoPlugin.LocalMaster.money,Plugin.MaximumBet,out bet,out slotResponse))return;
+            slotResponse="Waiting for host…";Plugin.Send(ActionKind.Slots,bet,number:activeSlotMachine.Index+1,allIn:slotAllIn);
         }
         private void SlotResponse(CasinoState state)
         {
@@ -63,9 +68,10 @@ namespace BazaarCasino
             if(!slotPanel||!slotPanel.activeSelf)return;
             var body=CasinoPlugin.LocalMaster?CasinoPlugin.LocalMaster.GetBody():null;
             if(!CasinoPlugin.InBazaar||!activeSlotMachine||!body||!body.healthComponent||!body.healthComponent.alive||SceneExitController.isRunning){Close();return;}
-            AttachSlotCamera();bool busy=activeSlotMachine.IsSpinning||Plugin.Waiting;
+            AttachSlotCamera();bool busy=activeSlotMachine.IsSpinning||Plugin.Waiting||WagerDialogOpen;
+            if(slotAllIn&&CasinoPlugin.LocalMaster.money>0&&CasinoPlugin.LocalMaster.money<=Plugin.MaximumBet)bet=(int)CasinoPlugin.LocalMaster.money;
             var camera=CasinoBillboard.ViewCamera;
-            bool overUI=MPEventSystem.readOnlyInstancesList.Any(e=>e&&e.IsPointerOverGameObject());
+            bool overUI=WagerDialogOpen||MPEventSystem.readOnlyInstancesList.Any(e=>e&&e.IsPointerOverGameObject());
             var ray=camera?camera.ScreenPointToRay(Input.mousePosition):default;
             int control=activeSlotMachine.HoverControls(ray,camera&&!overUI&&!busy);
             bool lever=camera&&!overUI&&activeSlotMachine.HitLever(ray);

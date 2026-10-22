@@ -10,6 +10,7 @@ namespace BazaarCasino
         public static float Upper(int row) => row-.06f;
     }
     public enum TableKind : byte { Blackjack=1, Roulette=2 }
+    public static class RoundTiming { public const double BettingSeconds=5, ResultsSeconds=1; }
     public enum TablePhase { Betting, Playing, Results }
     public sealed class SharedSeat
     {
@@ -50,7 +51,7 @@ namespace BazaarCasino
         {
             if(!CanBet(id)||wager<0)throw new InvalidOperationException("Betting is closed");
             Find(id).wager=wager;
-            if(wager>0 && deadline==0)deadline=now+15;
+            if(wager>0 && deadline==0)deadline=now+RoundTiming.BettingSeconds;
             if(seats.All(s=>s.wager==0))deadline=0;
         }
         public bool CanAct(uint id)=>phase==TablePhase.Playing && turn==id && Find(id)!=null && !Find(id).done;
@@ -139,7 +140,7 @@ namespace BazaarCasino
                 if(split){seat.payout+=HandPayout(seat.secondCards,seat.secondWager,false,out string second);seat.result="Hand 1: "+first+" · Hand 2: "+second;}
                 seat.firstDone=seat.secondDone=seat.done=true;
             }
-            phase=TablePhase.Results;turn=0;deadline=now+8;
+            phase=TablePhase.Results;turn=0;deadline=now+RoundTiming.ResultsSeconds;
         }
         public void Tick(double now,Random rng)
         {
@@ -176,7 +177,7 @@ namespace BazaarCasino
         {
             if(!CanBet(id)||total<0)throw new InvalidOperationException("Betting is closed");
             var seat=Find(id);seat.bets=bets.Select(b=>new RouletteBet{choice=b.choice,number=b.number,amount=b.amount}).ToArray();seat.wager=total;
-            if(total>0&&deadline==0)deadline=now+15;if(seats.All(s=>s.wager==0))deadline=0;
+            if(total>0&&deadline==0)deadline=now+RoundTiming.BettingSeconds;if(seats.All(s=>s.wager==0))deadline=0;
         }
         public void Start(int launchSeed,double now)
         {
@@ -190,7 +191,7 @@ namespace BazaarCasino
         }
         public void Finish(double now)
         {
-            if(phase!=TablePhase.Playing)return;number=spin.number;phase=TablePhase.Results;deadline=now+8;
+            if(phase!=TablePhase.Playing)return;number=spin.number;phase=TablePhase.Results;deadline=now+RoundTiming.ResultsSeconds;
             foreach(var seat in seats){seat.payout=RouletteBets.Payout(seat.bets,number);seat.result="Returned "+seat.payout+" gold";}
         }
         public void Tick(double now,Random rng)
@@ -207,7 +208,7 @@ namespace BazaarCasino
     [Serializable] public class TableSeatState
     {
         public uint id;public string name;public int slot,wager,payout,total,activeHand,handWager,secondWager,secondTotal;public int[] secondCards;
-        public bool done,seated;public float returnX,returnY,returnZ;public string result;public int[] cards;public RouletteBet[] bets;
+        public bool done,seated,returnRoot,hasAnchor;public uint bodyId;public float returnX,returnY,returnZ,anchorX,anchorY,anchorZ,anchorYaw;public string result;public int[] cards;public RouletteBet[] bets;
     }
     [Serializable] public class TableSnapshot
     {

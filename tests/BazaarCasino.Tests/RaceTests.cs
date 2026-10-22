@@ -33,12 +33,12 @@ static partial class RaceChecks
         check(stops>1000&&wins.All(n=>n>180&&n<320),"All four lanes have equal distributions and frequent annoying burrows");
         var table=new SharedCrabRace();
         check(!table.SetBet(0,"bad",0,500,0)&&!table.SetBet(1,"bad",4,500,0)&&!table.SetBet(1,"bad",0,-1,0),"Invalid player, lane and stake rejected without creating a ticket");
-        check(table.SetBet(1,"Survivor",2,500,10)&&table.deadline==25,"First stake opens a visible 15 second countdown");
-        check(table.SetBet(1,"Survivor",1,1000,15)&&table.tickets.Count==1&&table.deadline==25,"Replacing a wager does not create duplicate tickets or extend countdown");
-        check(table.SetBet(1,"Survivor",1,0,16)&&table.tickets.Count==0&&table.deadline==0,"Last cancellation closes the round before it starts");
+        check(table.SetBet(1,"Survivor",2,500,10)&&table.deadline==15,"First stake opens a visible 5 second countdown");
+        check(table.SetBet(1,"Survivor",1,1000,12)&&table.tickets.Count==1&&table.deadline==15,"Replacing a wager does not create duplicate tickets or extend countdown");
+        check(table.SetBet(1,"Survivor",1,0,13)&&table.tickets.Count==0&&table.deadline==0,"Last cancellation closes the round before it starts");
         for(uint id=1;id<=4;id++)table.SetBet(id,"Player",(int)id-1,500,20);
-        table.Tick(34,42);check(table.phase==TablePhase.Betting,"No premature race start");
-        table.Tick(35,42);check(table.phase==TablePhase.Playing&&table.round==1,"First deadline launches the shared race");
+        table.Tick(24,42);check(table.phase==TablePhase.Betting,"No premature race start");
+        table.Tick(25,42);check(table.phase==TablePhase.Playing&&table.round==1,"First deadline launches the shared race");
         check(!table.SetBet(1,"late",0,0,36),"Committed wagers cannot be refunded or changed during the race");
         check(!table.TakePayments().Any(),"No early prize before the finish");
         table.Tick(table.deadline,42);

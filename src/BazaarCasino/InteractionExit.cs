@@ -27,6 +27,6 @@ namespace BazaarCasino
             interactionGate.Observe(Input.GetMouseButton(0)||Input.GetKey(KeyCode.E)||(player!=null&&player.GetButton(5)));
         }
         internal bool IsAnyCasinoOpen=>IsOpen||tablePanel&&tablePanel.activeSelf;
-        internal void CloseFromEscape(){EscapeConsumedFrame=Time.frameCount;Close();}
+        internal void CloseFromEscape(){if(EscapeConsumedFrame==Time.frameCount)return;EscapeConsumedFrame=Time.frameCount;if(WagerDialogOpen)CloseWagerDialog();else Close();}
     }
 }

@@ -4,6 +4,16 @@ namespace BazaarCasino
 {
     public static class WagerRules
     {
+        // The exception is valid only for an exact, positive full-bankroll wager.
+        // Reservation belongs to this player and this game, not another table.
+        public static bool Valid(int amount,int minimum,int maximum,ulong available,bool allIn,bool refund=false)
+        {
+            if(amount==0)return refund&&!allIn;
+            return amount>0&&minimum>0&&maximum>=minimum&&amount<=maximum&&(ulong)amount<=available&&
+                (allIn?(ulong)amount==available:amount>=minimum);
+        }
+        public static bool TryAmount(string text,out int amount)=>int.TryParse(text,System.Globalization.NumberStyles.None,
+            System.Globalization.CultureInfo.InvariantCulture,out amount)&&amount>0;
         public static int ScaledMinimum(int floor,int casePrice,int limit)
         {
             if(floor<1||casePrice<1||limit<1)throw new ArgumentOutOfRangeException();

@@ -1,4 +1,50 @@
+## 1.11.1
+
+- Shorten blackjack, roulette and Hermit Derby betting to 5 seconds, with a 1-second result pause before reopening bets.
+- Keep blackjack turn timers and native wheel/race animation lengths; payouts remain immediate and exactly once.
+
+RoundTiming centralizes the five-second betting and one-second result windows. The host starts betting on the first paid wager and does not extend the deadline when more chips arrive. Each state transition still broadcasts immediately, and payments are consumed before the result state can reset. The one-second result window keeps a short readable outcome; it adds no separate cooldown after reopening bets. Native spin/race simulation and blackjack's 25-second per-hand timeout are unchanged. Visible countdown hints and language/en.json match the new timing.
+
 # Changelog
+
+## 1.11.0
+
+- Preserve player gold by finishing only the money-to-XP collector bound to a Bazaar destination, before its first burst. Ordinary stage exits retain native conversion; Bigger Bazaar remains optional and its wallet transfer is not duplicated. Host setting: Economy.KeepGoldOnBazaarEntry.
+- Add custom whole-number wager entry to blackjack, roulette, slots and Hermit Derby. Blackjack edits the total; roulette selects a chip amount. Add explicit All In with host validation of the entire available bankroll, including that activity's refundable stake. All In alone can fall below the minimum; maximum limits remain in force. Lunar Cache prices stay fixed.
+- Bump request protocol to 203 for the All In flag. Host and every client must use 1.11.0.
+- Add language/en.json and a documented JSON localization loader. Local language follows RoR2 or Localization.Language; missing/invalid translations fall back to English. Translate screen/world labels and interaction prompts without changing wire messages or item localization.
+- Add a short, newest-first README history and a prepend-only release-note script. Packaging checks the latest README entry against the manifest.
+
+## 1.10.10
+
+- Remove all developer command registration and chat execution from Casino. Modular stage/player/gold/restart tools now live in Quality of RoR2 1.1.0, with owner-account/host authorization and restricted legacy aliases.
+- Keep gameplay and seat protocol 202 unchanged. Casino works without QoR for ordinary gameplay.
+- Release build and 4,281,832 remaining rules/seat assertions pass; no owner-only command path remains in this DLL.
+
+## 1.10.9
+
+- Assign one immutable seat root position/yaw on the host and send it to every peer. Correct body, physics and detached visual pose in fixed update, late update and before camera rendering.
+- Keep the authorized seat when a custom motor or old movement packet displaces its character. Remove distance-based auto-leave and post-join wager rejection; release on Exit, death, disconnect, body replacement or scene cleanup.
+- Suspend additional native IPhysMotor components and non-trigger colliders while seated; restore original enabled/collision flags. Block foreign native teleports and MapZone respawns only during the live seat lock.
+- Use the explicit root/rotation teleport overload for entry/return, avoiding MotorAPI spawn-height offsets. Restore user controls immediately when the seat closes.
+- Bump request protocol to 202 for host-assigned anchor snapshots. Host and all clients must use 1.10.9.
+- Release build, 4,281,855 assertions and native API/HookGen audits pass. Regression cases cover displaced/OOB/non-finite movement samples and lease release conditions. Live co-op with modded survivors still needs verification.
+
+## 1.10.8
+
+- Fix a missing seating path for flying Rigidbody survivors such as HEL-P: pausing only the motor leaves the entity's flight state and RigidbodyDirection running. HEL-P also uses E/interact to descend.
+- Pause native managed state updates only for living seated bodies; retain the current state without forcing exit/re-entry. Restore normal updates on stand-up, death or scene exit. Clear input while the table is waiting for host approval too.
+- Hold the motor's actual Rigidbody during fixed simulation as well as rendering. Capture and restore gravity, constraints, interpolation, kinematic status and both movement/direction enabled flags. Roll back a failed seat setup.
+- Expand local seat diagnostics with survivor type, movement components, camera overrides and release reason. Protocol remains 201; use matching 1.10.8 builds on host and clients for this fix.
+- Release build, 4,281,837 rule assertions and native RoR2/Physics/Core/HookGen visibility audits pass. Live two-machine HEL-P seating still needs verification.
+
+## 1.10.7
+
+- Remove the persistent CASINO / E to interact HUD text, avoiding overlap with survivor-specific fuel bars. Keep nearby native interaction prompts.
+- Apply shared-table seat entry on the owning client instead of relying on a host teleport that the owner ignores. Capture/restore body-root coordinates and clear native interpolation when entering a chair.
+- Keep Rigidbody survivors such as Tank above the floor using collider clearance and synchronize the physics pose while seated. Validate the exact network body, chair index and finite return coordinates before applying snapshots.
+- Bump the casino request protocol to 201 because seat return coordinates changed. Host and every client must use 1.10.7; older requests are rejected before moving a character.
+- Release build, 4,281,832 rules assertions and native API audits pass. Remote Tank/humanoid seating still needs a live co-op check.
 
 ## 1.10.6
 

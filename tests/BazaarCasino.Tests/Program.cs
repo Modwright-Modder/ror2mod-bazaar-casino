@@ -5,19 +5,6 @@ using BazaarCasino;
 static class Program
 {
     static int assertions;
-    static void ManualCommandTests()
-    {
-        foreach(string text in new[]{"modwright_blueportal","/modwright_blueportal","  /MODWRIGHT_BLUEPORTAL  "})
-            Check(ManualCommandText.TryParse(text,out var command,out int amount,out string error)&&command==ManualCommand.BluePortal&&amount==0&&error==null,"Blue portal chat alias with optional slash");
-        foreach(string text in new[]{"modwright_gold 5000","/modwright_gold 5000"," /MODWRIGHT_GOLD\t5000 "})
-            Check(ManualCommandText.TryParse(text,out var command,out int amount,out string error)&&command==ManualCommand.Gold&&amount==5000&&error==null,"Gold chat alias parses a bounded integer");
-        foreach(string text in new[]{null,"","hello","/help","modwright_blueportal;quit","/modwright_gold_other 5"})
-            Check(!ManualCommandText.TryParse(text,out _,out _,out _),"Ordinary chat and other commands remain untouched");
-        foreach(string text in new[]{"/modwright_gold","modwright_gold 0","modwright_gold -1","modwright_gold 1000001","modwright_gold 999999999999999999","modwright_gold 5.5","modwright_gold 5000;quit","modwright_gold 5000\nquit","modwright_blueportal extra"})
-            Check(ManualCommandText.TryParse(text,out _,out _,out string error)&&error!=null,"Malformed known commands are rejected without forwarding to console");
-        foreach(int value in new[]{1,1000000})
-            Check(ManualCommandText.TryParse("modwright_gold "+value,out _,out int amount,out string error)&&amount==value&&error==null,"Gold command accepts both boundary amounts");
-    }
     static void CrabRaceTests()=>RaceChecks.Run(Check);
     static void Check(bool success, string description) { assertions++; if (!success) throw new Exception(description); }
     static BlackjackRound Hand(int[] player, int[] dealer, int[] nextCards, int wager = 10)
@@ -57,8 +44,10 @@ static class Program
     }
     static void Main()
     {
-        ManualCommandTests();
+        CustomWagerChecks.Run(Check);
         LoungeTravelTests.Run(Check);
+        SeatPlacementTests.Run(Check);
+        SeatAnchorTests.Run(Check);
         Check(Math.Abs((ReelLayout.Lower(1)+ReelLayout.Upper(1))/2-.5f)<.0001,"Stopped centre reel symbol is centred at payline");
         Check(ReelLayout.Upper(1)-ReelLayout.Lower(1)<1,"Symbol fits entirely in one reel cell");
         Check(ReelLayout.Upper(0)<0&&ReelLayout.Lower(2)>1,"Neighbouring stopped symbols are outside the viewport");
@@ -243,12 +232,19 @@ static class Program
         Check(!RouletteLayout.Hit(float.NaN,0,out _,out _)&&!RouletteLayout.Hit(float.PositiveInfinity,0,out _,out _),"Invalid projections cannot produce a bet");
         var roulette=new SharedRoulette();roulette.Join(1,"A");roulette.Join(2,"Spectator");
         roulette.Bet(1,new[]{new RouletteBet{choice=0,amount=10}},10,100);
-        Check(roulette.deadline==115,"First committed chip starts a visible 15-second countdown");
-        roulette.Bet(1,new[]{new RouletteBet{choice=0,amount=20}},20,105);
-        Check(roulette.deadline==115,"Adding chips does not indefinitely extend betting");
-        roulette.Tick(114.9,new Random(1));Check(roulette.phase==TablePhase.Betting,"Wheel waits for countdown to close");
-        roulette.Tick(115,new Random(1));Check(roulette.phase==TablePhase.Playing&&roulette.spin!=null,"Wheel launches automatically even with an unfunded spectator");
+        Check(roulette.deadline==105,"First committed chip starts a visible 5-second countdown");
+        roulette.Bet(1,new[]{new RouletteBet{choice=0,amount=20}},20,102);
+        Check(roulette.deadline==105,"Adding chips does not indefinitely extend betting");
+        roulette.Tick(104.9,new Random(1));Check(roulette.phase==TablePhase.Betting,"Wheel waits for countdown to close");
+        roulette.Tick(105,new Random(1));Check(roulette.phase==TablePhase.Playing&&roulette.spin!=null,"Wheel launches automatically even with an unfunded spectator");
         roulette.Tick(roulette.deadline,new Random(1));Check(roulette.phase==TablePhase.Results&&roulette.number>=0,"Automatic round reaches a physical result");
+        double nextBetAt=roulette.deadline;
+        Check(Math.Abs(nextBetAt-roulette.started-roulette.spin.duration-1)<.000001,"Roulette keeps only a one-second result window");
+        var fastBj=SplitHand(new[]{7,20},new[]{9,6},new[]{1,2,9,8});fastBj.Finish(20);
+        Check(fastBj.phase==TablePhase.Results&&fastBj.deadline==21,"Blackjack result pause is exactly one second");
+        Check(fastBj.TakePayments().Count()==1&&!fastBj.TakePayments().Any(),"Short results still make blackjack payments available exactly once before reset");
+        fastBj.Tick(20.999,new Random(1));Check(fastBj.phase==TablePhase.Results,"The outcome remains visible during its one-second result window");
+        fastBj.Tick(21,new Random(1));Check(fastBj.phase==TablePhase.Betting&&fastBj.deadline==0,"Betting reopens without an extra post-result cooldown");
         var bj=SplitHand(new[]{7,20},new[]{9,6},new[]{1,2,9,8});
         Check(!bj.Split(99,17)&&bj.CanSplit(1),"Split belongs to the current matching-pair owner");
         Check(bj.Split(1,17),"A matching pair becomes two hands");var seat=bj.Find(1);
